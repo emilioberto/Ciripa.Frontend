@@ -1,0 +1,4 @@
+<div class="form-group" [ngClass]="{'has-error': errorMessages?.length > 0}">
+  <ng-content></ng-content>
+  <p *ngFor="let message of errorMessages" class="form-input-hint">{{ message }}</p>
+</div>

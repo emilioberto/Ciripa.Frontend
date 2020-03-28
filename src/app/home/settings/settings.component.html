@@ -1,27 +1,37 @@
-<div [formGroup]="formGroup" *ngIf="!isLoading; else loader" class="container h-100">
+<div [formGroup]="formGroup" class="container h-100 p-5 bg-secondary">
   <div class="text-right">
-    <button class="btn">
+    <button class="btn" (click)="save()" [disabled]="isLoading">
       <i class="bx bx-save mr-2"></i>
       <span>Salva</span>
     </button>
   </div>
-  <div class="columns h-100">
+  <div class="columns" *ngIf="!isLoading; else loader">
     <div class="column col-4">
-      <div class="form-group">
+      <app-form-group [formGroup]="formGroup" formControlName="hourCost">
         <label class="form-label" for="hour-cost">Costo orario</label>
-        <input class="form-input" type="number" id="hour-cost" placeholder="Costo orario" formControlName="hourCost">
-      </div>
+        <input class="form-input" type="number" id="hour-cost" placeholder="Costo orario"
+          formControlName="hourCost">
+      </app-form-group>
     </div>
     <div class="column col-4">
-      <div class="form-group">
+      <app-form-group [formGroup]="formGroup" formControlName="extraHourCost">
         <label class="form-label" for="extra-hour-cost">Costo ore extra</label>
-        <input class="form-input" type ="number" id="extra-hour-cost" placeholder="Costo ore extra" formControlName="extraHourCost">
-      </div>
+        <input class="form-input" type="number" id="extra-hour-cost" placeholder="Costo ore extra"
+          formControlName="extraHourCost">
+      </app-form-group>
     </div>
     <div class="column col-4">
-      <div class="form-group">
+      <app-form-group [formGroup]="formGroup" formControlName="contractAmount">
         <label class="form-label" for="contract-cost">Costo contratto</label>
-        <input class="form-input" type="number" id="contract-cost" placeholder="Costo contratto" formControlName="contractAmount">
+        <input class="form-input" type="number" id="contract-cost" placeholder="Costo contratto"
+          formControlName="contractAmount">
+      </app-form-group>
+    </div>
+    <div class="column col-4">
+      <div class="form-group has-error">
+        <label class="form-label" for="contract-cost">Costo contratto</label>
+        <input class="form-input" type="number" id="contract-cost" placeholder="Costo contratto">
+        <p class="form-input-hint">aaaaaaaaaaaaa</p>
       </div>
     </div>
   </div>
