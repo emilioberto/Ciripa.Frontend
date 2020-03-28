@@ -1,5 +1,5 @@
 import { Component, forwardRef, Input } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractControl, ControlContainer, ControlValueAccessor, FormGroup, FormGroupDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { BaseComponent } from '@app/shared/components/base.component';
 
@@ -21,22 +21,11 @@ export class FormGroupComponent extends BaseComponent implements ControlValueAcc
   @Input() formControlName: string;
 
   errorMessages: string[];
+  disabled = false;
+  value: any;
 
   constructor() {
     super();
-  }
-
-  writeValue(obj: any): void {
-    throw new Error('Method not implemented.');
-  }
-  registerOnChange(fn: any): void {
-    throw new Error('Method not implemented.');
-  }
-  registerOnTouched(fn: any): void {
-    throw new Error('Method not implemented.');
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
   }
 
   internalOnInit(): void {
@@ -73,6 +62,15 @@ export class FormGroupComponent extends BaseComponent implements ControlValueAcc
 
     return errorMessages;
   }
+
+  // Control value accessor methods
+  onChange(newVal: any): void { }
+  onTouched(_?: any): void { }
+  writeValue(obj: any): void { this.value = obj; }
+  registerOnChange(fn: any): void { this.onChange = fn; }
+  registerOnTouched(fn: any): void { this.onTouched = fn; }
+  setDisabledState?(isDisabled: boolean): void { this.disabled = isDisabled; }
+
 }
 
 type FormControlStatus = 'VALID' | 'INVALID';
