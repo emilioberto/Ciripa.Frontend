@@ -28,7 +28,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles/styles.scss"
+              "node_modules/spectre.css/src/spectre.scss",
+              "src/styles/styles.scss",
+              "node_modules/boxicons/css/boxicons.min.css"
             ],
             "scripts": []
           },
@@ -92,7 +94,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles/styles.scss"
+              "node_modules/spectre.css/src/spectre.scss",
+              "src/styles/styles.scss",
+              "node_modules/boxicons/css/boxicons.min.css"
             ],
             "scripts": []
           }

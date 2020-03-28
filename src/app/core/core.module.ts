@@ -1,19 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import localeIt from '@angular/common/locales/it';
+import { LOCALE_ID, NgModule, Optional, SkipSelf } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NavigationService } from '@app/core/services/navigation.service';
+
+registerLocaleData(localeIt);
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserModule,
+    BrowserAnimationsModule
   ],
   providers: [
-    NavigationService
+    NavigationService,
+    {provide: LOCALE_ID, useValue: 'it' }
   ]
 })
 export class CoreModule {

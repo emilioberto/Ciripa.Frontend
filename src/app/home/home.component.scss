@@ -1,0 +1,24 @@
+@import "src/styles/variables";
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+
+  .home-header {
+    // nothing atm
+  }
+
+  .home-body {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+
+    .menu-container {
+      flex: 0 0 250px;
+    }
+
+    .router-outlet-container {
+      flex: 1;
+    }
+  }
+}

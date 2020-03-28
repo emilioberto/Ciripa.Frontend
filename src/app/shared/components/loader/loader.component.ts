@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { BaseComponent } from '@app/shared/components/base.component';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-loader',
+  templateUrl: './loader.component.html',
+  styleUrls: ['./loader.component.scss']
 })
-export class HomeComponent extends BaseComponent {
+export class LoaderComponent extends BaseComponent {
 
   constructor() {
     super();
