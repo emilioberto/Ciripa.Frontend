@@ -21,28 +21,22 @@ export class FormGroupComponent extends BaseComponent implements ControlValueAcc
   @Input() formControlName: string;
 
   errorMessages: string[];
-  _value: any;
 
   constructor() {
     super();
   }
 
-  onChanged: any = () => { };
-  onTouched: any = () => { };
-
-  writeValue(val) {
-    this._value = val;
+  writeValue(obj: any): void {
+    throw new Error('Method not implemented.');
   }
-
-  registerOnChange(fn: any) {
-    this.onChanged = fn;
+  registerOnChange(fn: any): void {
+    throw new Error('Method not implemented.');
   }
-  registerOnTouched(fn: any) {
-    this.onTouched = fn;
+  registerOnTouched(fn: any): void {
+    throw new Error('Method not implemented.');
   }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  setDisabledState?(isDisabled: boolean): void {
+    throw new Error('Method not implemented.');
   }
 
   internalOnInit(): void {
