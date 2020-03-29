@@ -1,7 +1,5 @@
 @import 'src/styles/variables';
 
-$navbar-height: 50px;
-
 header {
   height: $navbar-height;
   border-bottom: 1px solid $primary-color;
@@ -11,6 +9,7 @@ header {
     height: 100%;
 
     .navbar-logo {
+      margin-left: $menu-width;
       max-height: 90%;
     }
   }

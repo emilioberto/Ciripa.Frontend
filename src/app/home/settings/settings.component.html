@@ -1,6 +1,6 @@
-<div [formGroup]="formGroup" class="container h-100 p-5 bg-secondary">
+<form [formGroup]="formGroup" class="container h-100 p-5 bg-secondary" (ngSubmit)="save()">
   <div class="text-right">
-    <button class="btn btn-lg" (click)="save()" [disabled]="isLoading">
+    <button class="btn btn-lg" type="submit" [disabled]="isLoading">
       <i class="bx bx-save mr-2"></i>
       <span>Salva</span>
     </button>
@@ -36,7 +36,7 @@
       </app-form-group>
     </div>
   </div>
-</div>
+</form>
 
 <ng-template #loader>
   <app-loader></app-loader>

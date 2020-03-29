@@ -14,7 +14,7 @@
     flex-direction: row;
 
     .menu-container {
-      flex: 0 0 250px;
+      flex: 0 0 $menu-width;
     }
 
     .router-outlet-container {

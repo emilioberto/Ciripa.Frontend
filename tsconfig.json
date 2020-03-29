@@ -17,7 +17,7 @@
         "environments/*"
       ],
       "jszip": [
-        "node_modules/jszip/dist/jszip.min.js"
+        "../node_modules/jszip/dist/jszip.min.js"
       ]
     },
     "outDir": "./dist/out-tsc",

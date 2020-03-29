@@ -2,13 +2,11 @@
 
 .hbf {
   display: flex;
+  flex-direction: column;
   overflow: hidden;
 
   .body {
     flex: 1;
   }
 
-  .hbf-body, .hbf-header, .hbf-footer {
-    padding: $spacing-md;
-  }
 }

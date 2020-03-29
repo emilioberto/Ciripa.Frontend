@@ -9,6 +9,7 @@ import { KidsComponent } from '@app/home/kids/kids.component';
 import { MenuComponent } from '@app/home/menu/menu.component';
 import { NavbarComponent } from '@app/home/navbar/navbar.component';
 import { PresencesComponent } from '@app/home/presences/presences.component';
+import { KidsService } from '@app/home/services/kids.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { SettingsComponent } from '@app/home/settings/settings.component';
 import { SharedModule } from '@app/shared/shared.module';
@@ -19,6 +20,7 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: HomeStates.Kids, component: KidsComponent },
+      { path: `${HomeStates.KidDetail}/:id`, component: KidDetailComponent },
       { path: HomeStates.Presences, component: PresencesComponent },
       { path: HomeStates.Settings, component: SettingsComponent },
     ]
@@ -40,6 +42,7 @@ const routes: Routes = [
     SharedModule
   ],
   providers: [
+    KidsService,
     SettingsService
   ]
 })
