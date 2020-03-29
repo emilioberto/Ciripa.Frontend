@@ -2,8 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { FormGroupComponent } from './components/form-group/form-group.component';
-import { LoaderComponent } from './components/loader/loader.component';
+import { DxDataGridModule } from 'devextreme-angular';
+
+import { FormGroupComponent } from '@app/shared/components/form-group/form-group.component';
+import { HbfTemplateComponent } from '@app/shared/components/hbf-template/hbf-template.component';
+import { LoaderComponent } from '@app/shared/components/loader/loader.component';
 
 const Modules = [
   CommonModule,
@@ -13,7 +16,12 @@ const Modules = [
 
 const Components = [
   LoaderComponent,
-  FormGroupComponent
+  FormGroupComponent,
+  HbfTemplateComponent
+];
+
+const Devextreme = [
+  DxDataGridModule
 ];
 
 @NgModule({
@@ -21,11 +29,13 @@ const Components = [
     ...Components,
   ],
   imports: [
-    ...Modules
+    ...Modules,
+    ...Devextreme
   ],
   exports: [
     ...Components,
-    ...Modules
+    ...Modules,
+    ...Devextreme
   ]
 })
 export class SharedModule { }

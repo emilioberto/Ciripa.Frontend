@@ -1,0 +1,14 @@
+@import "src/styles/variables";
+
+.hbf {
+  display: flex;
+  overflow: hidden;
+
+  .body {
+    flex: 1;
+  }
+
+  .hbf-body, .hbf-header, .hbf-footer {
+    padding: $spacing-md;
+  }
+}
