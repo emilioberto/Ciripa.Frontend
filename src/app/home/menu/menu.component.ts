@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
-import { NavigationService } from '@app/core/services/navigation.service';
+import { Observable } from 'rxjs';
+
+import { MenuService } from '@app/home/services/menu.service';
 import { BaseComponent } from '@app/shared/components/base.component';
+import { AppSection } from '@app/shared/models/menu-item.enum';
 
 @Component({
   selector: 'app-menu',
@@ -10,26 +13,35 @@ import { BaseComponent } from '@app/shared/components/base.component';
 })
 export class MenuComponent extends BaseComponent {
 
+  appSections = AppSection;
+  activeMenuItem$: Observable<AppSection>;
+  menuItems: MenuItem[] = [
+    { label: 'Bambini', class: 'bx-face', appSection: AppSection.Kids },
+    { label: 'Appello', class: 'bx-calendar', appSection: AppSection.Presences },
+    { label: 'Riepilogo', class: 'bx-list-check', appSection: AppSection.Summary },
+    { label: 'Impostazioni', class: 'bx-cog', appSection: AppSection.Settings },
+  ];
+
   constructor(
-    private navigationSvc: NavigationService
+    private menuSvc: MenuService
   ) {
     super();
   }
 
-  internalOnInit(): void { }
+  internalOnInit(): void {
+    this.activeMenuItem$ = this.menuSvc.activeMenuItem$.asObservable();
+  }
 
   internalOnDestroy(): void { }
 
-  kids(): void {
-    this.navigationSvc.kids();
+  handleClick(menuItem: AppSection): void {
+    this.menuSvc.handleMenuClick(menuItem);
   }
 
-  presences(): void {
-    this.navigationSvc.presences();
-  }
+}
 
-  settings(): void {
-    this.navigationSvc.settings();
-  }
-
+interface MenuItem {
+  label: string;
+  class: string;
+  appSection: AppSection;
 }

@@ -1,1 +1,171 @@
-<p>kid-detail works!</p>
+<form class="h-100" [formGroup]="formGroup" (ngSubmit)="save()">
+  <app-hbf-template class="h-100">
+    <div header class="p-5 pb-0 h-100 bg-secondary text-right">
+      <button *ngIf="kidId" class="btn btn-error btn-lg" type="button" [disabled]="isLoading" (click)="delete()">
+        <i class="bx bx-trash mr-2"></i>
+        <span>Elimina</span>
+      </button>
+      <button class="btn btn-success btn-lg ml-2" type="submit" [disabled]="isLoading">
+        <i class="bx bx-save mr-2"></i>
+        <span>Salva</span>
+      </button>
+    </div>
+    <div body *ngIf="!isLoading; else loader;" class="p-5 h-100 bg-secondary">
+      <div class="columns">
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="firstName">
+            <label class="form-label" for="firstName">Nome</label>
+            <input class="form-input" type="text" id="firstName" placeholder="Nome" formControlName="firstName">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="lastName">
+            <label class="form-label" for="lastName">Cognome</label>
+            <input class="form-input" type="text" id="lastName" placeholder="Cognome" formControlName="lastName">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="fiscalCode">
+            <label class="form-label" for="fiscalCode">Codice fiscale</label>
+            <input class="form-input" type="text" id="fiscalCode" placeholder="Codice fiscale"
+              formControlName="fiscalCode">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="birthdate">
+            <label class="form-label" for="birthdate">Data di nascita</label>
+            <dx-date-box id="birthdate" type="date" formControlName="birthdate">
+            </dx-date-box>
+          </app-form-group>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="from">
+            <label class="form-label" for="from">Dal</label>
+            <dx-date-box id="from" type="date" formControlName="from">
+            </dx-date-box>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="to">
+            <label class="form-label" for="to">Al</label>
+            <dx-date-box id="to" type="date" formControlName="to">
+            </dx-date-box>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="contractType">
+            <label class="form-label" for="contract-type">Tipo contratto</label>
+            <dx-select-box [dataSource]="contractTypesDataSource" id="contract-type" valueExpr="id" displayExpr="description" formControlName="contractType">
+            </dx-select-box>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group *ngIf="showContractValue" [formGroup]="formGroup" formControlName="contractValue">
+            <label class="form-label" for="contract-value">Valore contratto</label>
+            <div class="has-icon-left">
+              <input class="form-input" type="number" step="0.01" id="contract-value" placeholder="Costo contratto"
+                formControlName="contractValue">
+              <i class="form-icon bx bx-euro mr-2"></i>
+            </div>
+          </app-form-group>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="paymentMethod">
+            <label class="form-label" for="payment-method">Metodo di pagamento</label>
+            <dx-select-box [dataSource]="paymentMethodsDataSource" id="payment-method" valueExpr="id" displayExpr="description" formControlName="paymentMethod">
+            </dx-select-box>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="from">
+            <label class="form-label" for="subscription-amount">Iscrizione pagata</label>
+            <label class="form-checkbox">
+              <input type="checkbox" formControlName="from">
+              <i class="form-icon"></i>
+            </label>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="to">
+            <label class="form-label" for="subscription-amount">Costo iscrizione</label>
+            <div class="has-icon-left">
+              <input class="form-input" type="number" step="0.01" id="subscription-amount" placeholder="Costo iscrizione"
+                formControlName="subscriptionAmount">
+              <i class="form-icon bx bx-euro mr-2"></i>
+            </div>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="notes">
+            <label class="form-label" for="notes">Tipo contratto</label>
+            <textarea class="form-input" id="notes" placeholder="Note" rows="3" formControlName="notes"></textarea>
+          </app-form-group>
+        </div>
+      </div>
+
+      <!-- Genitori -->
+      <h4 class="text-center text-primary mt-4">Genitori</h4>
+      <div class="columns">
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="parentFirstName">
+            <label class="form-label" for="parent-first-name">Nome</label>
+            <input class="form-input" type="text" id="parent-first-name" placeholder="Nome" formControlName="parentFirstName">
+          </app-form-group>
+        </div>
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="parentLastName">
+            <label class="form-label" for="parent-last-name">Cognome</label>
+            <input class="form-input" type="text" id="parent-last-name" placeholder="Cognome" formControlName="parentLastName">
+          </app-form-group>
+        </div>
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="parentFiscalCode">
+            <label class="form-label" for="fiscal-code">Codice fiscale</label>
+            <input class="form-input" type="text" id="fiscal-code" placeholder="Codice fiscale"
+              formControlName="parentFiscalCode">
+          </app-form-group>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="address">
+            <label class="form-label" for="address">Indirizzo</label>
+            <input class="form-input" type="text" id="address" placeholder="Indirizzo" formControlName="address">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="city">
+            <label class="form-label" for="city">Città</label>
+            <input class="form-input" type="text" id="city" placeholder="Città" formControlName="city">
+          </app-form-group>
+        </div>
+        <div class="column col-2">
+          <app-form-group [formGroup]="formGroup" formControlName="cap">
+            <label class="form-label" for="cap">CAP</label>
+            <input class="form-input" type="text" id="cap" placeholder="CAP"
+              formControlName="cap">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="province">
+            <label class="form-label" for="province">Provincia</label>
+            <input class="form-input" type="text" id="province" placeholder="Provincia"
+              formControlName="province">
+          </app-form-group>
+        </div>
+      </div>
+    </div>
+    <div footer class="h-100 bg-secondary">
+    </div>
+  </app-hbf-template>
+</form>
+
+<ng-template #loader>
+  <div body class="p-5 h-100 bg-secondary">
+    <app-loader></app-loader>
+  </div>
+</ng-template>

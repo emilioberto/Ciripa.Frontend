@@ -13,7 +13,7 @@ export interface Kid {
   contractType: ContractType;
   contractValue: number;
   subscriptionPaid: boolean;
-  subscription: number;
+  subscriptionAmount: number;
   parentFirstName: string;
   parentLastName: string;
   parentFiscalCode: string;

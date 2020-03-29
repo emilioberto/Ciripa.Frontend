@@ -1,6 +1,6 @@
 <form [formGroup]="formGroup" class="container h-100 p-5 bg-secondary" (ngSubmit)="save()">
   <div class="text-right">
-    <button class="btn btn-lg" type="submit" [disabled]="isLoading">
+    <button class="btn btn-success btn-lg" type="submit" [disabled]="isLoading">
       <i class="bx bx-save mr-2"></i>
       <span>Salva</span>
     </button>
@@ -26,11 +26,11 @@
       </app-form-group>
     </div>
     <div class="column col-4">
-      <app-form-group [formGroup]="formGroup" formControlName="contractAmount">
-        <label class="form-label" for="contract-cost">Costo contratto</label>
+      <app-form-group [formGroup]="formGroup" formControlName="subscriptionAmount">
+        <label class="form-label" for="subscription-cost">Costo contratto</label>
         <div class="has-icon-left">
-          <input class="form-input" type="number" step="0.01" id="contract-cost" placeholder="Costo contratto"
-            formControlName="contractAmount">
+          <input class="form-input" type="number" step="0.01" id="subscription-cost" placeholder="Costo contratto"
+            formControlName="subscriptionAmount">
           <i class="form-icon bx bx-euro mr-2"></i>
         </div>
       </app-form-group>

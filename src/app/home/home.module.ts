@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CoreModule } from '@app/core/core.module';
 import { HomeStates } from '@app/core/services/navigation.service';
 import { HomeComponent } from '@app/home/home.component';
 import { KidDetailComponent } from '@app/home/kid-detail/kid-detail.component';
@@ -10,6 +9,7 @@ import { MenuComponent } from '@app/home/menu/menu.component';
 import { NavbarComponent } from '@app/home/navbar/navbar.component';
 import { PresencesComponent } from '@app/home/presences/presences.component';
 import { KidsService } from '@app/home/services/kids.service';
+import { MenuService } from '@app/home/services/menu.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { SettingsComponent } from '@app/home/settings/settings.component';
 import { SharedModule } from '@app/shared/shared.module';
@@ -21,6 +21,7 @@ const routes: Routes = [
     children: [
       { path: HomeStates.Kids, component: KidsComponent },
       { path: `${HomeStates.KidDetail}/:id`, component: KidDetailComponent },
+      { path: HomeStates.KidDetail, component: KidDetailComponent },
       { path: HomeStates.Presences, component: PresencesComponent },
       { path: HomeStates.Settings, component: SettingsComponent },
     ]
@@ -43,7 +44,8 @@ const routes: Routes = [
   ],
   providers: [
     KidsService,
-    SettingsService
+    MenuService,
+    SettingsService,
   ]
 })
 export class HomeModule { }

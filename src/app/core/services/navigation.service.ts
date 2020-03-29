@@ -11,6 +11,7 @@ export enum HomeStates {
   Kids = 'kids',
   KidDetail = 'kid-detail',
   Presences = 'presences',
+  Summary = 'summary',
   Settings = 'settings',
 }
 
@@ -37,7 +38,7 @@ export class NavigationService {
     return this.router.navigate([AppStates.Home, HomeStates.Kids]);
   }
 
-  kidDetail(id: number): Promise<boolean> {
+  kidDetail(id?: number): Promise<boolean> {
     return id
       ? this.router.navigate([AppStates.Home, HomeStates.KidDetail, id])
       : this.router.navigate([AppStates.Home, HomeStates.KidDetail]);
@@ -45,6 +46,10 @@ export class NavigationService {
 
   presences(): Promise<boolean> {
     return this.router.navigate([AppStates.Home, HomeStates.Presences]);
+  }
+
+  summary(): Promise<boolean> {
+    return this.router.navigate([AppStates.Home, HomeStates.Summary]);
   }
 
   settings(): Promise<boolean> {

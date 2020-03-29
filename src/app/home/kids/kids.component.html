@@ -1,6 +1,12 @@
 <app-hbf-template class="h-100">
   <div header class="p-5 pb-0 h-100 bg-secondary text-center">
     <h2 class="mb-0 text-primary">Elenco bambini</h2>
+    <div class="text-right">
+      <button class="btn btn-secondary btn-lg" type="submit" [disabled]="isLoading" (click)="add()">
+        <i class="bx bx-plus mr-2"></i>
+        <span>Aggiungi</span>
+      </button>
+    </div>
   </div>
   <div body *ngIf="!isLoading; else loader;" class="p-5 h-100 bg-secondary">
     <dx-data-grid class="h-100" [dataSource]="dataSource" [showBorders]="true" [rowAlternationEnabled]="true" (onSelectionChanged)="onSelection($event)">

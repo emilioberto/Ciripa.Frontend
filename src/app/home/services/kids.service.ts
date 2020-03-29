@@ -23,4 +23,15 @@ export class KidsService {
     return this.httpClient.get<Kid[]>(this.apiUrl);
   }
 
+  create(kid: Kid): Observable<number> {
+    return this.httpClient.post<number>(this.apiUrl, kid);
+  }
+
+  update(id: number, kid: Kid): Observable<number> {
+    return this.httpClient.put<number>(`${this.apiUrl}/${id}`, kid);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

@@ -37,6 +37,10 @@ export class KidsComponent extends BaseComponent {
     this.navigationSvc.kidDetail(id);
   }
 
+  add(): void {
+    this.navigationSvc.kidDetail();
+  }
+
   private loadData(): void {
     this.kidsSvc.getList()
       .pipe(handleLoading(this))

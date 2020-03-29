@@ -50,7 +50,7 @@ export class SettingsComponent extends BaseComponent {
     this.formGroup = this.fb.group({
       [nameof<Settings>('hourCost')]: [null, Validators.required],
       [nameof<Settings>('extraHourCost')]: [null, Validators.required],
-      [nameof<Settings>('contractAmount')]: [null, Validators.required]
+      [nameof<Settings>('subscriptionAmount')]: [null, Validators.required]
     });
   }
 

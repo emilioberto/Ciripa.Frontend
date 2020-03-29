@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxDataGridModule, DxDateBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 
 import { FormGroupComponent } from '@app/shared/components/form-group/form-group.component';
 import { HbfTemplateComponent } from '@app/shared/components/hbf-template/hbf-template.component';
@@ -21,7 +21,9 @@ const Components = [
 ];
 
 const Devextreme = [
-  DxDataGridModule
+  DxDataGridModule,
+  DxDateBoxModule,
+  DxSelectBoxModule
 ];
 
 @NgModule({
