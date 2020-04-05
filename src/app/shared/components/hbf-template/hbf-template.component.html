@@ -1,11 +1,11 @@
-<div class="hbf h-100">
-  <div class="header">
+<div class="hbf h-100 overflow-hidden">
+  <div class="header bg-secondary">
     <ng-content select="[header]"></ng-content>
   </div>
-  <div class="body">
+  <div class="body bg-secondary" [ngClass]="overflowScroll ? 'overflow-scroll' : 'overflow-hidden'">
     <ng-content select="[body]"></ng-content>
   </div>
-  <div class="footer">
+  <div class="footer bg-secondary">
     <ng-content select="[footer]"></ng-content>
   </div>
 </div>

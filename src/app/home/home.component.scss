@@ -12,6 +12,7 @@
     display: flex;
     flex: 1;
     flex-direction: row;
+    max-height: calc(100% - #{$navbar-height});
 
     .menu-container {
       flex: 0 0 $menu-width;
@@ -19,6 +20,7 @@
 
     .router-outlet-container {
       flex: 1;
+      max-height: 100%;
     }
   }
 }

@@ -10,6 +10,7 @@ import { NavbarComponent } from '@app/home/navbar/navbar.component';
 import { PresencesComponent } from '@app/home/presences/presences.component';
 import { KidsService } from '@app/home/services/kids.service';
 import { MenuService } from '@app/home/services/menu.service';
+import { PresencesService } from '@app/home/services/presences.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { SettingsComponent } from '@app/home/settings/settings.component';
 import { SharedModule } from '@app/shared/shared.module';
@@ -45,6 +46,7 @@ const routes: Routes = [
   providers: [
     KidsService,
     MenuService,
+    PresencesService,
     SettingsService,
   ]
 })
