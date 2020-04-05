@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 import { PresencesService } from '@app/home/services/presences.service';
 import { BaseComponent } from '@app/shared/components/base.component';
@@ -14,31 +13,28 @@ import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 export class PresencesComponent extends BaseComponent {
 
   date = new Date();
-  presencesFormGroups: FormGroup[];
-  formGroup: FormGroup;
+  presences: Presence[];
 
   constructor(
-    private fb: FormBuilder,
     private presencesSvc: PresencesService
   ) {
     super();
   }
 
   internalOnInit(): void {
-    this.buildForm();
     this.loadData();
   }
 
   internalOnDestroy(): void { }
 
   save(): void {
-    const presences = this.formGroup.getRawValue();
-    this.presencesSvc.update(presences)
-      .pipe(handleLoading(this))
-      .subscribe(
-        () => this.loadData(),
-        err => console.error(err)
-      );
+    // const presences = this.formGroup.getRawValue();
+    // this.presencesSvc.update(presences)
+    //   .pipe(handleLoading(this))
+    //   .subscribe(
+    //     () => this.loadData(),
+    //     err => console.error(err)
+    //   );
   }
 
   onDateChanged(event: any): void {
@@ -46,25 +42,40 @@ export class PresencesComponent extends BaseComponent {
     this.loadData();
   }
 
-  private buildForm(): void {
-    this.formGroup = this.fb.group({
-      presences: new FormArray([])
+  // This code sucks but i wanna make it work atm...
+  onMorningEntryChanged(e: any, id: number): void {
+    this.presences = this.presences.map(x => {
+      if (x.id === id) {
+        x.morningEntry = e.value;
+      }
+      return x;
     });
   }
 
-  private buildPresencesFormArray(presences: Presence[]): void {
-    presences.forEach(p => {
-      (this.formGroup.get('presences') as FormArray).push(
-        this.fb.group({
-          id: p?.id,
-          date: p?.date,
-          morningEntry: p?.morningEntry,
-          morningExit: p?.morningExit,
-          eveningEntry: p?.eveningEntry,
-          eveningExit: p?.eveningExit,
-          kidName: { value: `${p?.kid?.firstName} ${p?.kid?.lastName}`, disabled: true }
-        })
-      );
+  onMorningExitChanged(e: any, id: number): void {
+    this.presences = this.presences.map(x => {
+      if (x.id === id) {
+        x.morningExit = e.value;
+      }
+      return x;
+    });
+  }
+
+  onEveningEntryChanged(e: any, id: number): void {
+    this.presences = this.presences.map(x => {
+      if (x.id === id) {
+        x.eveningEntry = e.value;
+      }
+      return x;
+    });
+  }
+
+  onEveningExitChanged(e: any, id: number): void {
+    this.presences = this.presences.map(x => {
+      if (x.id === id) {
+        x.eveningExit = e.value;
+      }
+      return x;
     });
   }
 
@@ -72,11 +83,10 @@ export class PresencesComponent extends BaseComponent {
     this.presencesSvc.getList({ date: this.date })
       .pipe(handleLoading(this))
       .subscribe(
-        presences => {
-          this.buildForm();
-          this.buildPresencesFormArray(presences);
-          this.presencesFormGroups = (this.formGroup.get('presences') as FormArray).controls as FormGroup[];
-        },
+        presences => this.presences = presences.map(x => {
+          x.morningEntry = new Date();
+          return x;
+        }),
         err => console.error(err)
       );
   }
