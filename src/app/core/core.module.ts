@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NavigationService } from '@app/core/services/navigation.service';
 
-registerLocaleData(localeIt);
+registerLocaleData(localeIt, 'it');
 
 @NgModule({
   declarations: [],

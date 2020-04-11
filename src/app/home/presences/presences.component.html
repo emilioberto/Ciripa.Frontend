@@ -28,7 +28,7 @@
               {{ data?.data?.morningEntry | date:'shortTime' }}
             </div>
             <div *dxTemplate="let data of 'morningEntryEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onMorningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+              <dx-date-box (onValueChanged)="onMorningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
                 type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
@@ -38,7 +38,7 @@
               {{ data?.data?.morningExit | date:'shortTime' }}
             </div>
             <div *dxTemplate="let data of 'morningExitEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onMorningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+              <dx-date-box (onValueChanged)="onMorningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
                 type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
@@ -50,7 +50,7 @@
               {{ data?.data?.eveningEntry | date:'shortTime' }}
             </div>
             <div *dxTemplate="let data of 'eveningEntryEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onEveningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+              <dx-date-box (onValueChanged)="onEveningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
                 type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
@@ -60,7 +60,7 @@
               {{ data?.data?.eveningExit | date:'shortTime' }}
             </div>
             <div *dxTemplate="let data of 'eveningExitEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onEveningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+              <dx-date-box (onValueChanged)="onEveningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
                 type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
