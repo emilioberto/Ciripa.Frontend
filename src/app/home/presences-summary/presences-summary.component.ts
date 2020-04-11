@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
 import DataSource from 'devextreme/data/data_source';
@@ -7,7 +8,8 @@ import { PresencesService } from '@app/home/services/presences.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ByDateFilter } from '@app/shared/models/by-date-filter.model';
 import { Kid } from '@app/shared/models/kid.model';
-import { Presence } from '@app/shared/models/presence.model';
+import { PresenceListItem } from '@app/shared/models/presence-list-item.model';
+import { PresencesSummary } from '@app/shared/models/presences-summary.model';
 import { SelectBoxDataSourceItem } from '@app/shared/models/select-box-data-source-item.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 
@@ -25,11 +27,12 @@ export class PresencesSummaryComponent extends BaseComponent {
   calendarOptions = { maxZoomLevel: 'year', minZoomLevel: 'century' };
   kids: Kid[];
   kidsDataSource: DataSource;
-  presences: Presence[];
+  presences: PresenceListItem[];
 
   constructor(
     private kidsSvc: KidsService,
     private presencesSvc: PresencesService,
+    private datePipe: DatePipe,
   ) {
     super();
   }
@@ -49,8 +52,6 @@ export class PresencesSummaryComponent extends BaseComponent {
 
   onKidChanged(event: any): void {
     this.selectedKidId = event.value;
-    const selectedKid = this.kids.find(x => x.id === this.selectedKidId);
-    this.fileName = `${selectedKid?.lastName} ${selectedKid?.firstName}`;
     if (this.selectedDate) {
       this.loadData();
     }
@@ -73,11 +74,14 @@ export class PresencesSummaryComponent extends BaseComponent {
   }
 
   private loadData(): void {
+    const selectedKid = this.kids.find(x => x.id === this.selectedKidId);
+    this.fileName = `${this.datePipe.transform(this.selectedDate, 'MMMM yyyy')}_${selectedKid?.lastName}_${selectedKid?.firstName}_`;
+
     const filter: ByDateFilter = { date: this.selectedDate };
     this.presencesSvc.getKidPresencesByMonth(this.selectedKidId, filter)
       .pipe(handleLoading(this))
       .subscribe(
-        presences => this.presences = presences,
+        presencesSummary => this.presences = presencesSummary.presences,
         err => {}
       );
   }

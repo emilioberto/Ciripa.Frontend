@@ -17,7 +17,7 @@
     <div class="container">
       <dx-data-grid class="h-100" [dataSource]="presences" [showBorders]="true" [rowAlternationEnabled]="true">
 
-        <dxo-export [enabled]="true" [fileName]="fileName" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-export [enabled]="true" [fileName]="fileName"></dxo-export>
         <dxo-paging [enabled]="false"></dxo-paging>
 
         <dxi-column caption="Giorno" dataField="date" dataType="datetime" cellTemplate="dayCellTemplate">

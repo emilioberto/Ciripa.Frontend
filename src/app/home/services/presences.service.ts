@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 import { ByDateFilter } from '@app/shared/models/by-date-filter.model';
 import { Presence } from '@app/shared/models/presence.model';
+import { PresencesSummary } from '@app/shared/models/presences-summary.model';
 
 @Injectable()
 export class PresencesService {
@@ -20,8 +21,8 @@ export class PresencesService {
     return this.httpClient.post<Presence[]>(`${this.apiUrl}/list`, filter);
   }
 
-  getKidPresencesByMonth(kidId: number, filter: ByDateFilter): Observable<Presence[]> {
-    return this.httpClient.post<Presence[]>(`${this.apiUrl}/list/kid/${kidId}`, filter);
+  getKidPresencesByMonth(kidId: number, filter: ByDateFilter): Observable<PresencesSummary> {
+    return this.httpClient.post<PresencesSummary>(`${this.apiUrl}/list/kid/${kidId}`, filter);
   }
 
   update(presences: Presence[]): Observable<Presence[]> {

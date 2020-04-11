@@ -28,13 +28,12 @@ export class PresencesComponent extends BaseComponent {
   internalOnDestroy(): void { }
 
   save(): void {
-    // const presences = this.formGroup.getRawValue();
-    // this.presencesSvc.update(presences)
-    //   .pipe(handleLoading(this))
-    //   .subscribe(
-    //     () => this.loadData(),
-    //     err => console.error(err)
-    //   );
+    this.presencesSvc.update(this.presences)
+      .pipe(handleLoading(this))
+      .subscribe(
+        () => this.loadData(),
+        err => console.error(err)
+      );
   }
 
   onDateChanged(event: any): void {
@@ -46,7 +45,7 @@ export class PresencesComponent extends BaseComponent {
   onMorningEntryChanged(e: any, id: number): void {
     this.presences = this.presences.map(x => {
       if (x.id === id) {
-        x.morningEntry = e.value;
+        x.morningEntry = new Date(e.value);
       }
       return x;
     });
@@ -55,7 +54,7 @@ export class PresencesComponent extends BaseComponent {
   onMorningExitChanged(e: any, id: number): void {
     this.presences = this.presences.map(x => {
       if (x.id === id) {
-        x.morningExit = e.value;
+        x.morningExit = new Date(e.value);
       }
       return x;
     });
@@ -64,7 +63,7 @@ export class PresencesComponent extends BaseComponent {
   onEveningEntryChanged(e: any, id: number): void {
     this.presences = this.presences.map(x => {
       if (x.id === id) {
-        x.eveningEntry = e.value;
+        x.eveningEntry = new Date(e.value);
       }
       return x;
     });
@@ -73,7 +72,7 @@ export class PresencesComponent extends BaseComponent {
   onEveningExitChanged(e: any, id: number): void {
     this.presences = this.presences.map(x => {
       if (x.id === id) {
-        x.eveningExit = e.value;
+        x.eveningExit = new Date(e.value);
       }
       return x;
     });
@@ -83,10 +82,7 @@ export class PresencesComponent extends BaseComponent {
     this.presencesSvc.getList({ date: this.date })
       .pipe(handleLoading(this))
       .subscribe(
-        presences => this.presences = presences.map(x => {
-          x.morningEntry = new Date();
-          return x;
-        }),
+        presences => this.presences = presences,
         err => console.error(err)
       );
   }
