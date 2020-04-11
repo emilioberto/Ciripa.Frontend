@@ -27,7 +27,7 @@ export class PresencesSummaryComponent extends BaseComponent {
   calendarOptions = { maxZoomLevel: 'year', minZoomLevel: 'century' };
   kids: Kid[];
   kidsDataSource: DataSource;
-  presences: PresenceListItem[];
+  presenceSummary: PresencesSummary;
 
   constructor(
     private kidsSvc: KidsService,
@@ -35,6 +35,8 @@ export class PresencesSummaryComponent extends BaseComponent {
     private datePipe: DatePipe,
   ) {
     super();
+
+    this.calculateMonthHoursTotal = this.calculateMonthHoursTotal.bind(this);
   }
 
   internalOnInit(): void {
@@ -54,6 +56,12 @@ export class PresencesSummaryComponent extends BaseComponent {
     this.selectedKidId = event.value;
     if (this.selectedDate) {
       this.loadData();
+    }
+  }
+
+  calculateMonthHoursTotal(options: any): void {
+    if (options.name === 'monthHoursTotal') {
+      options.totalValue = this.presenceSummary.totalHours;
     }
   }
 
@@ -81,8 +89,8 @@ export class PresencesSummaryComponent extends BaseComponent {
     this.presencesSvc.getKidPresencesByMonth(this.selectedKidId, filter)
       .pipe(handleLoading(this))
       .subscribe(
-        presencesSummary => this.presences = presencesSummary.presences,
-        err => {}
+        presencesSummary => this.presenceSummary = presencesSummary,
+        err => { }
       );
   }
 

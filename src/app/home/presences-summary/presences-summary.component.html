@@ -15,7 +15,7 @@
 
   <div body *ngIf="!isLoading; else loader;" class="p-5 h-100">
     <div class="container">
-      <dx-data-grid class="h-100" [dataSource]="presences" [showBorders]="true" [rowAlternationEnabled]="true">
+      <dx-data-grid class="h-100" [dataSource]="presenceSummary.presences" [showBorders]="true" [rowAlternationEnabled]="true">
 
         <dxo-export [enabled]="true" [fileName]="fileName"></dxo-export>
         <dxo-paging [enabled]="false"></dxo-paging>
@@ -52,13 +52,26 @@
               {{ data?.data?.eveningExit | date:'shortTime' }}
             </div>
           </dxi-column>
+          <dxi-column name="dayHours" caption="Ore giornaliere" dataType="number"
+            cellTemplate="dayHoursTotalCellTemplate">
+            <div *dxTemplate="let data of 'dayHoursTotalCellTemplate'">
+              {{ data?.data?.morningHours + data?.data?.eveningHours}}
+            </div>
+          </dxi-column>
         </dxi-column>
+
+        <dxo-summary [calculateCustomSummary]="calculateMonthHoursTotal">
+          <dxi-total-item name="monthHoursTotal" summaryType="custom" valueFormat="decimal" displayFormat="Ore totali: {0}" showInColumn="dayHours">
+          </dxi-total-item>
+        </dxo-summary>
+
       </dx-data-grid>
     </div>
   </div>
 
   <div footer class="h-100 p-5 text-center">
-    <button class="btn btn-success btn-lg ml-2" type="button" [disabled]="isLoading || !selectedKidId || !selectedDate" (click)="print()">
+    <button class="btn btn-success btn-lg ml-2" type="button" [disabled]="isLoading || !selectedKidId || !selectedDate"
+      (click)="print()">
       <i class="bx bxs-file-pdf mr-2"></i>
       <span>Stampa</span>
     </button>
