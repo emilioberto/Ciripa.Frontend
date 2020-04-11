@@ -7,6 +7,7 @@ import { KidDetailComponent } from '@app/home/kid-detail/kid-detail.component';
 import { KidsComponent } from '@app/home/kids/kids.component';
 import { MenuComponent } from '@app/home/menu/menu.component';
 import { NavbarComponent } from '@app/home/navbar/navbar.component';
+import { PresencesSummaryComponent } from '@app/home/presences-summary/presences-summary.component';
 import { PresencesComponent } from '@app/home/presences/presences.component';
 import { KidsService } from '@app/home/services/kids.service';
 import { MenuService } from '@app/home/services/menu.service';
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: `${HomeStates.KidDetail}/:id`, component: KidDetailComponent },
       { path: HomeStates.KidDetail, component: KidDetailComponent },
       { path: HomeStates.Presences, component: PresencesComponent },
+      { path: HomeStates.Summary, component: PresencesSummaryComponent },
       { path: HomeStates.Settings, component: SettingsComponent },
     ]
   }
@@ -37,7 +39,8 @@ const routes: Routes = [
     SettingsComponent,
     PresencesComponent,
     MenuComponent,
-    NavbarComponent
+    NavbarComponent,
+    PresencesSummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -20,7 +20,7 @@ export class PresencesService {
     return this.httpClient.post<Presence[]>(`${this.apiUrl}/list`, filter);
   }
 
-  getListByKidId(kidId: number, filter: ByDateFilter): Observable<Presence[]> {
+  getKidPresencesByMonth(kidId: number, filter: ByDateFilter): Observable<Presence[]> {
     return this.httpClient.post<Presence[]>(`${this.apiUrl}/list/kid/${kidId}`, filter);
   }
 
