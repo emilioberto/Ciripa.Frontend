@@ -23,7 +23,7 @@
     "devextreme": "latest",
     "devextreme-angular": "latest",
     "devextreme-schematics": "^1.1.12",
-    "rxjs": "~6.5.4",
+    "rxjs": "~6.5.5",
     "spectre.css": "^0.5.8",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
