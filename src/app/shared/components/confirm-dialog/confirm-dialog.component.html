@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+  <div class="container py-2">
+    <h6> {{ message }} </h6>
+  </div>
+</div>
+<div mat-dialog-actions class="w-100 buttons-container">
+  <button class="btn btn-primary btn-lg" type="button" (click)="close()">Annulla</button>
+  <button class="btn btn-success btn-lg ml-2" type="submit" (click)="confirm()">Conferma</button>
+</div>

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable, zip } from 'rxjs';
+import { zip } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { NavigationService } from '@app/core/services/navigation.service';
@@ -10,6 +12,7 @@ import { ToastsService } from '@app/core/services/toasts.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { BaseComponent } from '@app/shared/components/base.component';
+import { ConfirmDialogComponent } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
 import { ContractType, ContractTypesDataSource } from '@app/shared/models/contract-type.enum';
 import { Kid } from '@app/shared/models/kid.model';
 import { PaymentMethodsDataSource } from '@app/shared/models/payment-method.enum';
@@ -39,7 +42,8 @@ export class KidDetailComponent extends BaseComponent {
     private settingsSvc: SettingsService,
     private navigationSvc: NavigationService,
     private exceptionsSvc: ExceptionsService,
-    private toastsSvc: ToastsService
+    private toastsSvc: ToastsService,
+    public dialog: MatDialog
   ) {
     super();
   }
@@ -80,8 +84,16 @@ export class KidDetailComponent extends BaseComponent {
   }
 
   delete(): void {
-    this.kidsSvc.delete(this.kidId)
-      .pipe(handleLoading(this))
+    const confirmModal = this.dialog.open(ConfirmDialogComponent, {
+      data: `Sei sicuro di voler cancellare l'elemento selezionato?`
+    });
+
+    confirmModal.afterClosed()
+      .pipe(
+        filter(x => x),
+        take(1),
+        switchMap(() => this.kidsSvc.delete(this.kidId).pipe(handleLoading(this))),
+      )
       .subscribe(
         () => {
           this.navigationSvc.kids();

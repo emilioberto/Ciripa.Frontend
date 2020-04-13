@@ -7,7 +7,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
 import { CoreModule } from '@app/core/core.module';
-
 @NgModule({
   declarations: [
     AppComponent
