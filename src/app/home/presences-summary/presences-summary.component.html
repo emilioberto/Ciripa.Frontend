@@ -14,8 +14,8 @@
   </div>
 
   <div body *ngIf="!isLoading; else loader;" class="p-5 h-100">
-    <div class="container">
-      <dx-data-grid class="h-100" [dataSource]="presenceSummary.presences" [showBorders]="true" [rowAlternationEnabled]="true">
+    <div class="container h-100">
+      <dx-data-grid class="h-100" [dataSource]="presenceSummary?.presences" [showBorders]="true" [rowAlternationEnabled]="true">
 
         <dxo-export [enabled]="true" [fileName]="fileName"></dxo-export>
         <dxo-paging [enabled]="false"></dxo-paging>

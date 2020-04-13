@@ -13,7 +13,7 @@
   </div>
 
   <div body *ngIf="!isLoading; else loader;" class="p-5 h-100">
-    <div class="container">
+    <div class="container h-100">
       <dx-data-grid class="h-100" [dataSource]="presences" [showBorders]="true" [rowAlternationEnabled]="true">
         <dxo-editing [allowUpdating]="true" mode="cell"></dxo-editing>
 
