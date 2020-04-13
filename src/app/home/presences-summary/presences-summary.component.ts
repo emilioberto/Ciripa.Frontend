@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 
 import DataSource from 'devextreme/data/data_source';
 
+import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { PresencesService } from '@app/home/services/presences.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ByDateFilter } from '@app/shared/models/by-date-filter.model';
 import { Kid } from '@app/shared/models/kid.model';
-import { PresenceListItem } from '@app/shared/models/presence-list-item.model';
 import { PresencesSummary } from '@app/shared/models/presences-summary.model';
 import { SelectBoxDataSourceItem } from '@app/shared/models/select-box-data-source-item.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
@@ -33,6 +33,7 @@ export class PresencesSummaryComponent extends BaseComponent {
     private kidsSvc: KidsService,
     private presencesSvc: PresencesService,
     private datePipe: DatePipe,
+    private exceptionsSvc: ExceptionsService
   ) {
     super();
 
@@ -77,7 +78,7 @@ export class PresencesSummaryComponent extends BaseComponent {
           this.kids = kids;
           this.kidsDataSource = this.getKidsDataSource(kids);
         },
-        err => { }
+        err => this.exceptionsSvc.handle(err)
       );
   }
 
@@ -90,7 +91,7 @@ export class PresencesSummaryComponent extends BaseComponent {
       .pipe(handleLoading(this))
       .subscribe(
         presencesSummary => this.presenceSummary = presencesSummary,
-        err => { }
+        err => this.exceptionsSvc.handle(err)
       );
   }
 

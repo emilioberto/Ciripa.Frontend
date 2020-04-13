@@ -32,7 +32,8 @@
               "node_modules/devextreme/dist/css/dx.light.css",
               "node_modules/spectre.css/src/spectre.scss",
               "src/styles/styles.scss",
-              "node_modules/boxicons/css/boxicons.min.css"
+              "node_modules/boxicons/css/boxicons.min.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },

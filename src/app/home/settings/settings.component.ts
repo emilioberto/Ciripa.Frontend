@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { switchMap } from 'rxjs/operators';
 
+import { ExceptionsService } from '@app/core/services/exceptions.service';
+import { ToastsService } from '@app/core/services/toasts.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { Settings } from '@app/shared/models/settings.model';
@@ -20,7 +22,9 @@ export class SettingsComponent extends BaseComponent {
 
   constructor(
     private settingsSvc: SettingsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private exceptionsSvc: ExceptionsService,
+    private toastsSvc: ToastsService,
   ) {
     super();
   }
@@ -41,8 +45,11 @@ export class SettingsComponent extends BaseComponent {
         handleLoading(this)
       )
       .subscribe(
-        () => this.formGroup.patchValue(settings),
-        err => { }
+        () => {
+          this.toastsSvc.dataSavedSuccess();
+          this.formGroup.patchValue(settings);
+        },
+        err => this.exceptionsSvc.handle(err)
       );
   }
 
@@ -59,7 +66,7 @@ export class SettingsComponent extends BaseComponent {
       .pipe(handleLoading(this))
       .subscribe(
         settings => this.formGroup.patchValue(settings),
-        err => { }
+        err => this.exceptionsSvc.handle(err)
       );
   }
 

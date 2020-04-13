@@ -4,7 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Observable, zip } from 'rxjs';
 
+import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { NavigationService } from '@app/core/services/navigation.service';
+import { ToastsService } from '@app/core/services/toasts.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { BaseComponent } from '@app/shared/components/base.component';
@@ -35,7 +37,9 @@ export class KidDetailComponent extends BaseComponent {
     private fb: FormBuilder,
     private kidsSvc: KidsService,
     private settingsSvc: SettingsService,
-    private navigationSvc: NavigationService
+    private navigationSvc: NavigationService,
+    private exceptionsSvc: ExceptionsService,
+    private toastsSvc: ToastsService
   ) {
     super();
   }
@@ -69,8 +73,9 @@ export class KidDetailComponent extends BaseComponent {
       .subscribe(
         kidId => {
           this.navigationSvc.kidDetail(kidId);
+          this.toastsSvc.dataSavedSuccess();
         },
-        err => {}
+        err => this.exceptionsSvc.handle(err)
       );
   }
 
@@ -80,8 +85,9 @@ export class KidDetailComponent extends BaseComponent {
       .subscribe(
         () => {
           this.navigationSvc.kids();
+          this.toastsSvc.dataSavedSuccess();
         },
-        err => {}
+        err => this.exceptionsSvc.handle(err)
       );
   }
 
@@ -93,7 +99,7 @@ export class KidDetailComponent extends BaseComponent {
           this.formGroup.patchValue(kid);
           this.settings = settings;
         },
-        err => {}
+        err => this.exceptionsSvc.handle(err)
       );
   }
 
@@ -105,7 +111,7 @@ export class KidDetailComponent extends BaseComponent {
           this.settings = settings;
           this.formGroup.patchValue({ [nameof<Kid>('subscriptionAmount')]: settings.subscriptionAmount });
         },
-        err => {}
+        err => this.exceptionsSvc.handle(err)
       );
   }
 

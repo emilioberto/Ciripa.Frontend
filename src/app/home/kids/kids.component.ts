@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { NavigationService } from '@app/core/services/navigation.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { BaseComponent } from '@app/shared/components/base.component';
@@ -18,6 +19,7 @@ export class KidsComponent extends BaseComponent {
   constructor(
     private kidsSvc: KidsService,
     private navigationSvc: NavigationService,
+    private exceptionsSvc: ExceptionsService
   ) {
     super();
   }
@@ -46,7 +48,7 @@ export class KidsComponent extends BaseComponent {
       .pipe(handleLoading(this))
       .subscribe(
         kids => this.dataSource = kids,
-        err => {}
+        err => this.exceptionsSvc.handle(err)
       );
   }
 

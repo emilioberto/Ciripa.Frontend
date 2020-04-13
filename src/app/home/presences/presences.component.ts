@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { ExceptionsService } from '@app/core/services/exceptions.service';
+import { ToastsService } from '@app/core/services/toasts.service';
 import { PresencesService } from '@app/home/services/presences.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { Presence } from '@app/shared/models/presence.model';
@@ -16,7 +18,9 @@ export class PresencesComponent extends BaseComponent {
   presences: Presence[];
 
   constructor(
-    private presencesSvc: PresencesService
+    private presencesSvc: PresencesService,
+    private exceptionsSvc: ExceptionsService,
+    private toastsSvc: ToastsService
   ) {
     super();
   }
@@ -31,8 +35,11 @@ export class PresencesComponent extends BaseComponent {
     this.presencesSvc.update(this.presences)
       .pipe(handleLoading(this))
       .subscribe(
-        () => this.loadData(),
-        err => console.error(err)
+        () => {
+          this.toastsSvc.dataSavedSuccess();
+          this.loadData();
+        },
+        err => this.exceptionsSvc.handle(err)
       );
   }
 
@@ -83,7 +90,7 @@ export class PresencesComponent extends BaseComponent {
       .pipe(handleLoading(this))
       .subscribe(
         presences => this.presences = presences,
-        err => console.error(err)
+        err => this.exceptionsSvc.handle(err)
       );
   }
 }

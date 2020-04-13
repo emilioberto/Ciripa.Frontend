@@ -5,7 +5,9 @@ import { LOCALE_ID, NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { NavigationService } from '@app/core/services/navigation.service';
+import { ToastsService } from '@app/core/services/toasts.service';
 
 registerLocaleData(localeIt, 'it');
 
@@ -18,7 +20,9 @@ registerLocaleData(localeIt, 'it');
     BrowserAnimationsModule
   ],
   providers: [
+    ExceptionsService,
     NavigationService,
+    ToastsService,
     {provide: LOCALE_ID, useValue: 'it' }
   ]
 })
