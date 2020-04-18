@@ -7,10 +7,6 @@ export class ToastsService {
 
   constructor(private toastr: ToastrService) { }
 
-  dataSavedSuccess(): void {
-    this.toastr.success('Dati salvati correttamente');
-  }
-
   success(message: string, title?: string, config?: Partial<IndividualConfig>): ActiveToast<any> {
     return this.toastr.success(message, title, config);
   }
@@ -25,6 +21,16 @@ export class ToastsService {
 
   info(message: string, title?: string, config?: Partial<IndividualConfig>): ActiveToast<any> {
     return this.toastr.info(message, title, config);
+  }
+
+  // Custom
+
+  dataSavedSuccess(): ActiveToast<any> {
+    return this.toastr.success('Dati salvati correttamente');
+  }
+
+  invalidForm(): ActiveToast<any> {
+    return this.toastr.warning('Dati mancanti e/o non validi');
   }
 
 }
