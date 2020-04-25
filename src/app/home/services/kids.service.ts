@@ -31,7 +31,7 @@ export class KidsService {
     return this.httpClient.put<number>(`${this.apiUrl}/${id}`, kid);
   }
 
-  delete(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
+  delete(id: number): Observable<number> {
+    return this.httpClient.delete<number>(`${this.apiUrl}/${id}`);
   }
 }

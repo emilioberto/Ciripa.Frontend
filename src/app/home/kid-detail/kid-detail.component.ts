@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { zip } from 'rxjs';
+import { of, zip } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
@@ -18,7 +18,7 @@ import { Kid } from '@app/shared/models/kid.model';
 import { PaymentMethodsDataSource } from '@app/shared/models/payment-method.enum';
 import { Settings } from '@app/shared/models/settings.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
-import { nameof } from '@app/shared/utils/utils';
+import { nameof, validateFormGroup } from '@app/shared/utils/utils';
 
 @Component({
   selector: 'app-kid-detail',
@@ -66,6 +66,12 @@ export class KidDetailComponent extends BaseComponent {
   internalOnDestroy(): void { }
 
   save(): void {
+    validateFormGroup(this.formGroup);
+    if (this.formGroup.invalid) {
+      this.toastsSvc.invalidForm();
+      return;
+    }
+
     const upsertKid = this.formGroup.getRawValue() as Kid;
 
     const obs$ = this.kidId
@@ -92,12 +98,19 @@ export class KidDetailComponent extends BaseComponent {
       .pipe(
         filter(x => x),
         take(1),
-        switchMap(() => this.kidsSvc.delete(this.kidId).pipe(handleLoading(this))),
+        switchMap(res => {
+          if (res) {
+            return this.kidsSvc.delete(this.kidId).pipe(handleLoading(this));
+          }
+          return of(0);
+        }),
       )
       .subscribe(
-        () => {
-          this.navigationSvc.kids();
-          this.toastsSvc.dataSavedSuccess();
+        result => {
+          if (result > 0) {
+            this.navigationSvc.kids();
+            this.toastsSvc.dataSavedSuccess();
+          }
         },
         err => this.exceptionsSvc.handle(err)
       );
@@ -133,7 +146,7 @@ export class KidDetailComponent extends BaseComponent {
       [nameof<Kid>('lastName')]: ['', Validators.required],
       [nameof<Kid>('fiscalCode')]: '',
       [nameof<Kid>('birthdate')]: null,
-      [nameof<Kid>('from')]: new Date(),
+      [nameof<Kid>('from')]: [new Date(), Validators.required],
       [nameof<Kid>('to')]: null,
       [nameof<Kid>('notes')]: '',
       [nameof<Kid>('contractType')]: ['', Validators.required],
