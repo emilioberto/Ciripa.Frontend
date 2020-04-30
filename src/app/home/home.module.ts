@@ -5,12 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeStates } from '@app/core/services/navigation.service';
 import { CanDeactivateGuard } from '@app/home/can-deactivate.guard';
 import { HomeComponent } from '@app/home/home.component';
+import { InvoicesComponent } from '@app/home/invoices/invoices.component';
 import { KidDetailComponent } from '@app/home/kid-detail/kid-detail.component';
 import { KidsComponent } from '@app/home/kids/kids.component';
 import { MenuComponent } from '@app/home/menu/menu.component';
 import { NavbarComponent } from '@app/home/navbar/navbar.component';
 import { PresencesSummaryComponent } from '@app/home/presences-summary/presences-summary.component';
 import { PresencesComponent } from '@app/home/presences/presences.component';
+import { InvoicesService } from '@app/home/services/invoices.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { MenuService } from '@app/home/services/menu.service';
 import { PresencesService } from '@app/home/services/presences.service';
@@ -25,6 +27,7 @@ const routes: Routes = [
     children: [
       { path: HomeStates.Kids, component: KidsComponent },
       { path: `${HomeStates.KidDetail}/:id`, component: KidDetailComponent, canDeactivate: [CanDeactivateGuard] },
+      { path: HomeStates.Invoices, component: InvoicesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.KidDetail, component: KidDetailComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.Presences, component: PresencesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.Summary, component: PresencesSummaryComponent },
@@ -42,7 +45,8 @@ const routes: Routes = [
     PresencesComponent,
     MenuComponent,
     NavbarComponent,
-    PresencesSummaryComponent
+    PresencesSummaryComponent,
+    InvoicesComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -51,6 +55,7 @@ const routes: Routes = [
   providers: [
     DatePipe,
     KidsService,
+    InvoicesService,
     MenuService,
     PresencesService,
     SettingsService,

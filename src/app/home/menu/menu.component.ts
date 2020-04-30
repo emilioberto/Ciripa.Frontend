@@ -19,6 +19,7 @@ export class MenuComponent extends BaseComponent {
     { label: 'Bambini', class: 'bx-face', appSection: AppSection.Kids },
     { label: 'Appello', class: 'bx-calendar', appSection: AppSection.Presences },
     { label: 'Riepilogo', class: 'bx-list-check', appSection: AppSection.Summary },
+    { label: 'Fatturate', class: 'bx-money', appSection: AppSection.Invoices },
     { label: 'Impostazioni', class: 'bx-cog', appSection: AppSection.Settings },
   ];
 

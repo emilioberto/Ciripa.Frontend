@@ -10,6 +10,7 @@ export enum AppStates {
 export enum HomeStates {
   Kids = 'kids',
   KidDetail = 'kid-detail',
+  Invoices = 'invoices',
   Presences = 'presences',
   Summary = 'summary',
   Settings = 'settings',
@@ -42,6 +43,10 @@ export class NavigationService {
     return id
       ? this.router.navigate([AppStates.Home, HomeStates.KidDetail, id])
       : this.router.navigate([AppStates.Home, HomeStates.KidDetail]);
+  }
+
+  invoices(): Promise<boolean> {
+    return this.router.navigate([AppStates.Home, HomeStates.Invoices]);
   }
 
   presences(): Promise<boolean> {
