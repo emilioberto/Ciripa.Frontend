@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
-import { switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { ToastsService } from '@app/core/services/toasts.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { BaseComponent } from '@app/shared/components/base.component';
+import { ConfirmDialogComponent } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
 import { Settings } from '@app/shared/models/settings.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
-import { nameof } from '@app/shared/utils/utils';
+import { applyOnAllControls, nameof } from '@app/shared/utils/utils';
 
 @Component({
   selector: 'app-settings',
@@ -25,6 +28,7 @@ export class SettingsComponent extends BaseComponent {
     private fb: FormBuilder,
     private exceptionsSvc: ExceptionsService,
     private toastsSvc: ToastsService,
+    public dialog: MatDialog
   ) {
     super();
   }
@@ -35,6 +39,23 @@ export class SettingsComponent extends BaseComponent {
   }
 
   internalOnDestroy(): void { }
+
+  canDeactivate(): Observable<boolean> {
+    if (this.formGroup.dirty) {
+      const confirmModal = this.dialog.open(ConfirmDialogComponent, {
+        data: `Ci sono dati non salvati. Uscire senza salvare?`
+      });
+
+      return confirmModal.afterClosed()
+        .pipe(
+          filter(x => x),
+          take(1),
+          switchMap(res => of(!!res)),
+        );
+    }
+
+    return of(true);
+  }
 
   save(): void {
     const settings = this.formGroup.getRawValue() as Settings;
@@ -47,7 +68,7 @@ export class SettingsComponent extends BaseComponent {
       .subscribe(
         () => {
           this.toastsSvc.dataSavedSuccess();
-          this.formGroup.patchValue(settings);
+          this.loadData();
         },
         err => this.exceptionsSvc.handle(err)
       );
@@ -65,7 +86,10 @@ export class SettingsComponent extends BaseComponent {
     this.settingsSvc.get()
       .pipe(handleLoading(this))
       .subscribe(
-        settings => this.formGroup.patchValue(settings),
+        settings => {
+          this.formGroup.patchValue(settings);
+          applyOnAllControls(this.formGroup, x => x.markAsPristine());
+        },
         err => this.exceptionsSvc.handle(err)
       );
   }

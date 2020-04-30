@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { of, zip } from 'rxjs';
+import { Observable, of, zip } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
@@ -18,7 +18,7 @@ import { Kid } from '@app/shared/models/kid.model';
 import { PaymentMethodsDataSource } from '@app/shared/models/payment-method.enum';
 import { Settings } from '@app/shared/models/settings.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
-import { nameof, validateFormGroup } from '@app/shared/utils/utils';
+import { applyOnAllControls, nameof, validateFormGroup } from '@app/shared/utils/utils';
 
 @Component({
   selector: 'app-kid-detail',
@@ -64,6 +64,23 @@ export class KidDetailComponent extends BaseComponent {
   }
 
   internalOnDestroy(): void { }
+
+  canDeactivate(): Observable<boolean> {
+    if (this.formGroup.dirty) {
+      const confirmModal = this.dialog.open(ConfirmDialogComponent, {
+        data: `Ci sono dati non salvati. Uscire senza salvare?`
+      });
+
+      return confirmModal.afterClosed()
+        .pipe(
+          filter(x => x),
+          take(1),
+          switchMap(res => of(!!res)),
+        );
+    }
+
+    return of(true);
+  }
 
   save(): void {
     validateFormGroup(this.formGroup);
@@ -169,6 +186,7 @@ export class KidDetailComponent extends BaseComponent {
           this.showContractValue = kid.contractType === ContractType.Contract;
           if (kid.contractType === ContractType.Hours) {
             this.formGroup.patchValue({ [nameof<Kid>('contractValue')]: 0 }, { emitEvent: false });
+            applyOnAllControls(this.formGroup, x => x.markAsPristine());
           }
         })
     );

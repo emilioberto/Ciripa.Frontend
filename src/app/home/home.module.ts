@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeStates } from '@app/core/services/navigation.service';
+import { CanDeactivateGuard } from '@app/home/can-deactivate.guard';
 import { HomeComponent } from '@app/home/home.component';
 import { KidDetailComponent } from '@app/home/kid-detail/kid-detail.component';
 import { KidsComponent } from '@app/home/kids/kids.component';
@@ -23,11 +24,11 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: HomeStates.Kids, component: KidsComponent },
-      { path: `${HomeStates.KidDetail}/:id`, component: KidDetailComponent },
-      { path: HomeStates.KidDetail, component: KidDetailComponent },
-      { path: HomeStates.Presences, component: PresencesComponent },
+      { path: `${HomeStates.KidDetail}/:id`, component: KidDetailComponent, canDeactivate: [CanDeactivateGuard] },
+      { path: HomeStates.KidDetail, component: KidDetailComponent, canDeactivate: [CanDeactivateGuard] },
+      { path: HomeStates.Presences, component: PresencesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.Summary, component: PresencesSummaryComponent },
-      { path: HomeStates.Settings, component: SettingsComponent },
+      { path: HomeStates.Settings, component: SettingsComponent, canDeactivate: [CanDeactivateGuard] },
     ]
   }
 ];
@@ -53,6 +54,7 @@ const routes: Routes = [
     MenuService,
     PresencesService,
     SettingsService,
+    CanDeactivateGuard
   ]
 })
 export class HomeModule { }

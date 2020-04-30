@@ -26,20 +26,22 @@
             cellTemplate="morningEntryCellTemplate" editCellTemplate="morningEntryEditCellTemplate">
             <div *dxTemplate="let data of 'morningEntryCellTemplate'">
               {{ data?.data?.morningEntry | date:'shortTime' }}
+              <span class="text-error" *ngIf="!data?.data?.morningEntry && data?.data?.morningExit">{{ requiredErrorMessage }}</span>
             </div>
             <div *dxTemplate="let data of 'morningEntryEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onMorningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
-                type="time" [value]="data?.data?.id"></dx-date-box>
+              <dx-date-box (onValueChanged)="onMorningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
           <dxi-column caption="Uscita" dataField="morningExit" dataType="datetime"
             cellTemplate="morningExitCellTemplate" editCellTemplate="morningExitEditCellTemplate">
             <div *dxTemplate="let data of 'morningExitCellTemplate'">
               {{ data?.data?.morningExit | date:'shortTime' }}
+              <span class="text-error" *ngIf="!data?.data?.morningExit && data?.data?.morningEntry">{{ requiredErrorMessage }}</span>
             </div>
             <div *dxTemplate="let data of 'morningExitEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onMorningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
-                type="time" [value]="data?.data?.id"></dx-date-box>
+              <dx-date-box (onValueChanged)="onMorningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
         </dxi-column>
@@ -48,20 +50,22 @@
             cellTemplate="eveningEntryCellTemplate" editCellTemplate="eveningEntryEditCellTemplate">
             <div *dxTemplate="let data of 'eveningEntryCellTemplate'">
               {{ data?.data?.eveningEntry | date:'shortTime' }}
+              <span class="text-error" *ngIf="!data?.data?.eveningEntry && data?.data?.eveningExit">{{ requiredErrorMessage }}</span>
             </div>
             <div *dxTemplate="let data of 'eveningEntryEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onEveningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
-                type="time" [value]="data?.data?.id"></dx-date-box>
+              <dx-date-box (onValueChanged)="onEveningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
           <dxi-column caption="Uscita" dataField="eveningExit" dataType="datetime"
             cellTemplate="eveningExitCellTemplate" editCellTemplate="eveningExitEditCellTemplate">
             <div *dxTemplate="let data of 'eveningExitCellTemplate'">
               {{ data?.data?.eveningExit | date:'shortTime' }}
+              <span class="text-error" *ngIf="!data?.data?.eveningExit && data?.data?.eveningEntry">{{ requiredErrorMessage }}</span>
             </div>
             <div *dxTemplate="let data of 'eveningExitEditCellTemplate'">
-              <dx-date-box (onValueChanged)="onEveningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true" displayFormat="HH:mm"
-                type="time" [value]="data?.data?.id"></dx-date-box>
+              <dx-date-box (onValueChanged)="onEveningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
             </div>
           </dxi-column>
         </dxi-column>

@@ -1,6 +1,6 @@
 import { OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 export abstract class BaseComponent implements OnInit, OnDestroy {
 
@@ -21,4 +21,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   abstract internalOnInit(): void;
   abstract internalOnDestroy(): void;
 
+  canDeactivate(): Observable<boolean> | boolean {
+    return true;
+  }
 }

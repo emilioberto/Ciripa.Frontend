@@ -26,6 +26,6 @@ export class ConfirmDialogComponent extends BaseComponent {
   }
 
   close(): void {
-    this.dialogRef.close(true);
+    this.dialogRef.close(false);
   }
 }
