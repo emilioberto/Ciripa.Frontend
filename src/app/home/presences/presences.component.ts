@@ -146,7 +146,10 @@ export class PresencesComponent extends BaseComponent {
     this.presencesSvc.getList({ date: this.date })
       .pipe(handleLoading(this))
       .subscribe(
-        presences => this.presences = presences,
+        presences => {
+          this.presences = presences;
+          this.isDirty = false;
+        },
         err => this.exceptionsSvc.handle(err)
       );
   }
