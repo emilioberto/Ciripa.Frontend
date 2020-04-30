@@ -68,7 +68,6 @@ export class PresencesComponent extends BaseComponent {
 
       return confirmModal.afterClosed()
         .pipe(
-          filter(x => x),
           take(1),
           switchMap(res => of(!!res)),
         );

@@ -113,7 +113,6 @@ export class KidDetailComponent extends BaseComponent {
 
     confirmModal.afterClosed()
       .pipe(
-        filter(x => x),
         take(1),
         switchMap(res => {
           if (res) {
@@ -186,7 +185,6 @@ export class KidDetailComponent extends BaseComponent {
           this.showContractValue = kid.contractType === ContractType.Contract;
           if (kid.contractType === ContractType.Hours) {
             this.formGroup.patchValue({ [nameof<Kid>('contractValue')]: 0 }, { emitEvent: false });
-            applyOnAllControls(this.formGroup, x => x.markAsPristine());
           }
         })
     );

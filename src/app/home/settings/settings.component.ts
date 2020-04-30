@@ -48,7 +48,6 @@ export class SettingsComponent extends BaseComponent {
 
       return confirmModal.afterClosed()
         .pipe(
-          filter(x => x),
           take(1),
           switchMap(res => of(!!res)),
         );
@@ -86,10 +85,7 @@ export class SettingsComponent extends BaseComponent {
     this.settingsSvc.get()
       .pipe(handleLoading(this))
       .subscribe(
-        settings => {
-          this.formGroup.patchValue(settings);
-          applyOnAllControls(this.formGroup, x => x.markAsPristine());
-        },
+        settings => this.formGroup.patchValue(settings),
         err => this.exceptionsSvc.handle(err)
       );
   }
