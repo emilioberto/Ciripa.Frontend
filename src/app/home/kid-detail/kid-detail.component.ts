@@ -124,6 +124,7 @@ export class KidDetailComponent extends BaseComponent {
       .subscribe(
         result => {
           if (result > 0) {
+            applyOnAllControls(this.formGroup, x => x.markAsPristine());
             this.navigationSvc.kids();
             this.toastsSvc.dataSavedSuccess();
           }

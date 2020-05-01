@@ -66,6 +66,7 @@ export class SettingsComponent extends BaseComponent {
       )
       .subscribe(
         () => {
+          applyOnAllControls(this.formGroup, x => x.markAsPristine());
           this.toastsSvc.dataSavedSuccess();
           this.loadData();
         },
