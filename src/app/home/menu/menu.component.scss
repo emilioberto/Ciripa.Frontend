@@ -26,9 +26,16 @@
     }
   }
 
-  .logo img {
-    max-width: 100%;
-    object-fit: contain;
-    opacity: .7;
+  .logo {
+    position: fixed;
+    z-index: -1;
+    bottom: 0;
+    opacity: .3;
+
+    & img {
+      max-width: 100%;
+      object-fit: contain;
+      opacity: .7;
+    }
   }
 }
