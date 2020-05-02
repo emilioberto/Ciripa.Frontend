@@ -99,6 +99,7 @@ export class KidDetailComponent extends BaseComponent {
       .pipe(handleLoading(this))
       .subscribe(
         kidId => {
+          applyOnAllControls(this.formGroup, x => x.markAsPristine());
           this.navigationSvc.kidDetail(kidId);
           this.toastsSvc.dataSavedSuccess();
         },
