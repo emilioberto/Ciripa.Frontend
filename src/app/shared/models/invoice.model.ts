@@ -8,6 +8,7 @@ export interface Invoice {
   number: string;
   date: Date;
   amount?: number;
+  hours: number;
   invoiceAmount?: number;
   paymentMethod?: PaymentMethod;
   paymentDate?: Date;

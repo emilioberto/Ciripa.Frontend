@@ -21,6 +21,7 @@ export class MenuComponent extends BaseComponent {
     { label: 'Riepilogo', class: 'bx-list-check', appSection: AppSection.Summary },
     { label: 'Fatturate', class: 'bx-money', appSection: AppSection.Invoices },
     { label: 'Impostazioni', class: 'bx-cog', appSection: AppSection.Settings },
+    { label: 'Stampe', class: 'bxs-file-pdf', appSection: AppSection.Prints}
   ];
 
   constructor(

@@ -33,6 +33,9 @@ export class MenuService {
       case AppSection.Invoices:
         this.navigationSvc.invoices();
         break;
+        case AppSection.Prints:
+          this.navigationSvc.prints();
+          break;
       default:
         assertNever(menuItem);
     }

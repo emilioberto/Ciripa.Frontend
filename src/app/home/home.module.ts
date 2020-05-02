@@ -12,6 +12,7 @@ import { MenuComponent } from '@app/home/menu/menu.component';
 import { NavbarComponent } from '@app/home/navbar/navbar.component';
 import { PresencesSummaryComponent } from '@app/home/presences-summary/presences-summary.component';
 import { PresencesComponent } from '@app/home/presences/presences.component';
+import { PrintsComponent } from '@app/home/prints/prints.component';
 import { InvoicesService } from '@app/home/services/invoices.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { MenuService } from '@app/home/services/menu.service';
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: HomeStates.Invoices, component: InvoicesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.KidDetail, component: KidDetailComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.Presences, component: PresencesComponent, canDeactivate: [CanDeactivateGuard] },
+      { path: HomeStates.Prints, component: PrintsComponent },
       { path: HomeStates.Summary, component: PresencesSummaryComponent },
       { path: HomeStates.Settings, component: SettingsComponent, canDeactivate: [CanDeactivateGuard] },
     ]
@@ -46,7 +48,8 @@ const routes: Routes = [
     MenuComponent,
     NavbarComponent,
     PresencesSummaryComponent,
-    InvoicesComponent
+    InvoicesComponent,
+    PrintsComponent
   ],
   imports: [
     RouterModule.forChild(routes),

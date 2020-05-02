@@ -3,5 +3,6 @@ export enum AppSection {
   Invoices,
   Presences,
   Summary,
-  Settings
+  Settings,
+  Prints
 }
