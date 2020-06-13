@@ -1,0 +1,50 @@
+// Custom imports
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "src/styles/variables.scss";
+@import "src/styles/devextreme.scss";
+@import "src/styles/spectre.scss";
+
+// Custom style
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.h-100 {
+  height: 100% !important;
+}
+
+.w-100 {
+  height: 100% !important;
+}
+
+.overflow-scroll {
+  overflow: auto;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+// .time-control::-webkit-datetime-edit-ampm-field {
+//   display: none;
+// }
+
+// input[type="time"] {
+//   &::-webkit-clear-button {
+//     -webkit-appearance: none;
+//     -moz-appearance: none;
+//     appearance: none;
+//     margin: 0;
+//   }
+//   &::-webkit-inner-spin-button,
+//   &::-webkit-outer-spin-button {
+//     -webkit-appearance: none;
+//     -moz-appearance: none;
+//     appearance: none;
+//     margin: 0;
+//   }
+// }

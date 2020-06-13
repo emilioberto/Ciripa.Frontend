@@ -1,0 +1,17 @@
+<ul class="menu h-100">
+
+  <div class="menu-items">
+
+    <li *ngFor="let menuItem of menuItems" class="menu-item" [ngClass]="{'bg-secondary': (activeMenuItem$ | async) === menuItem.appSection}">
+      <a [routerLink]="" (click)="handleClick(menuItem.appSection)">
+        <span>{{ menuItem.label }}</span>
+        <i class="bx bx-sm" ngClass="{{ menuItem.class }}"></i>
+      </a>
+    </li>
+
+  </div>
+
+  <div class="logo">
+    <img src="./assets/images/logo.jpg" alt="logo ciripa">
+  </div>
+</ul>

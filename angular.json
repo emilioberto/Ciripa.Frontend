@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "ciripa": {
@@ -28,7 +28,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "node_modules/devextreme/dist/css/dx.common.css",
+              "node_modules/devextreme/dist/css/dx.light.css",
+              "node_modules/spectre.css/src/spectre.scss",
+              "src/styles/styles.scss",
+              "node_modules/boxicons/css/boxicons.min.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
@@ -56,8 +61,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "60kb",
+                  "maximumError": "100kb"
                 }
               ]
             }
@@ -92,7 +97,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "node_modules/spectre.css/src/spectre.scss",
+              "src/styles/styles.scss",
+              "node_modules/boxicons/css/boxicons.min.css"
             ],
             "scripts": []
           }
@@ -123,6 +130,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ciripa"
+    }
+  },
+  "defaultProject": "ciripa",
+  "cli": {
+    "analytics": "10be8640-3eb9-432c-a86b-ea232099e948"
+  }
 }

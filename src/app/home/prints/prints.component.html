@@ -1,0 +1,38 @@
+<app-hbf-template class="h-100">
+  <div header class="p-5 pb-0 h-100 text-center">
+    <h2 class="mb-0 text-primary">Stampe</h2>
+  </div>
+  <div body *ngIf="!isLoading; else loader;" class="p-5 h-100">
+    <section>
+      <button class="btn btn-secondary btn-lg" type="submit" [disabled]="isLoading" (click)="printPresences()">
+        <span>Stampa appello vuoto</span>
+      </button>
+    </section>
+
+    <section class="mt-2 d-flex">
+      <dx-date-box class="mr-2" type="date" [disabled]="isLoading" displayFormat="monthAndYear" [calendarOptions]="calendarOptions"
+        [(ngModel)]="selectedMonth">
+      </dx-date-box>
+      <button class="btn btn-secondary btn-lg" type="submit" [disabled]="isLoading || !selectedMonth" (click)="printMonthlyPresences()">
+        <span>Stampa appello vuoto per tutto il mese</span>
+      </button>
+    </section>
+
+    <section class="mt-2 d-flex">
+      <dx-date-box class="mr-2" type="date" [disabled]="isLoading" displayFormat="monthAndYear" [calendarOptions]="calendarOptions"
+        [(ngModel)]="summarySelectedMonth">
+      </dx-date-box>
+      <button class="btn btn-secondary btn-lg" type="submit" [disabled]="isLoading || !selectedMonth" (click)="printMonthlySummary()">
+        <span>Stampa riepilogo mensile</span>
+      </button>
+    </section>
+  </div>
+  <div footer class="h-100">
+  </div>
+</app-hbf-template>
+
+<ng-template #loader>
+  <div body class="p-5 h-100">
+    <app-loader></app-loader>
+  </div>
+</ng-template>

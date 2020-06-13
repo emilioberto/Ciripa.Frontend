@@ -1,0 +1,41 @@
+@import "src/styles/variables";
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: -0.2rem;
+
+  .menu-items {
+    flex: 1;
+
+    .menu-item > a {
+      align-items: center;
+      border: 1px solid lighten($primary-color, 30%);
+      color: $primary-color;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      span {
+        padding-bottom: $spacing-lg;
+        padding-top: $spacing-lg;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .logo {
+    position: fixed;
+    z-index: -1;
+    bottom: 0;
+    opacity: .3;
+
+    & img {
+      max-width: 100%;
+      object-fit: contain;
+      opacity: .7;
+    }
+  }
+}
