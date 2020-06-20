@@ -23,6 +23,7 @@ export class PresencesSummaryComponent extends BaseComponent {
   selectedDate = new Date();
   selectedKidId: number;
   fileName: string;
+  selectedKid: Kid;
 
   calendarOptions = { maxZoomLevel: 'year', minZoomLevel: 'century' };
   kids: Kid[];
@@ -55,20 +56,29 @@ export class PresencesSummaryComponent extends BaseComponent {
 
   onKidChanged(event: any): void {
     this.selectedKidId = event.value;
-    if (this.selectedDate) {
+    if (this.selectedDate && this.selectedKidId) {
       this.loadData();
+    } else {
+      this.presenceSummary = null;
     }
   }
 
   calculateMonthHoursTotal(options: any): void {
     if (options.name === 'monthHoursTotal') {
       options.totalValue = this.presenceSummary.totalHours;
+      return;
+    }
+    if (options.name === 'extraHoursTotal') {
+      options.totalValue = this.presenceSummary.totalExtraContractHours;
+      return;
+    }
+    if (options.name === 'extraServiceTimeHoursTotal') {
+      options.totalValue = this.presenceSummary.totalExtraServiceTimeHours;
+      return;
     }
   }
 
-  print(): void {
-
-  }
+  print(): void { }
 
   private loadKids(): void {
     this.kidsSvc.getList()
@@ -83,8 +93,8 @@ export class PresencesSummaryComponent extends BaseComponent {
   }
 
   private loadData(): void {
-    const selectedKid = this.kids.find(x => x.id === this.selectedKidId);
-    this.fileName = `${this.datePipe.transform(this.selectedDate, 'MMMM yyyy')}_${selectedKid?.lastName}_${selectedKid?.firstName}_`;
+    this.selectedKid = this.kids.find(x => x.id === this.selectedKidId);
+    this.fileName = `${this.datePipe.transform(this.selectedDate, 'MMMM yyyy')}_${this.selectedKid?.lastName}_${this.selectedKid?.firstName}_`;
 
     const filter: ByDateFilter = { date: this.selectedDate };
     this.presencesSvc.getKidPresencesByMonth(this.selectedKidId, filter)

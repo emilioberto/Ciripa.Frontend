@@ -13,6 +13,7 @@ import { NavbarComponent } from '@app/home/navbar/navbar.component';
 import { PresencesSummaryComponent } from '@app/home/presences-summary/presences-summary.component';
 import { PresencesComponent } from '@app/home/presences/presences.component';
 import { PrintsComponent } from '@app/home/prints/prints.component';
+import { ContractsService } from '@app/home/services/contracts.service';
 import { InvoicesService } from '@app/home/services/invoices.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { MenuService } from '@app/home/services/menu.service';
@@ -20,6 +21,7 @@ import { PresencesService } from '@app/home/services/presences.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { SettingsComponent } from '@app/home/settings/settings.component';
 import { SharedModule } from '@app/shared/shared.module';
+import { NewContractDialogComponent } from './settings/new-contract-dialog/new-contract-dialog.component';
 
 const routes: Routes = [
   {
@@ -49,7 +51,8 @@ const routes: Routes = [
     NavbarComponent,
     PresencesSummaryComponent,
     InvoicesComponent,
-    PrintsComponent
+    PrintsComponent,
+    NewContractDialogComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -58,6 +61,7 @@ const routes: Routes = [
   providers: [
     DatePipe,
     KidsService,
+    ContractsService,
     InvoicesService,
     MenuService,
     PresencesService,

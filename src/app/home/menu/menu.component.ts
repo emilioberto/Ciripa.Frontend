@@ -18,8 +18,8 @@ export class MenuComponent extends BaseComponent {
   menuItems: MenuItem[] = [
     { label: 'Bambini', class: 'bx-face', appSection: AppSection.Kids },
     { label: 'Appello', class: 'bx-calendar', appSection: AppSection.Presences },
-    { label: 'Riepilogo', class: 'bx-list-check', appSection: AppSection.Summary },
-    { label: 'Fatturate', class: 'bx-money', appSection: AppSection.Invoices },
+    { label: 'Riepilogo presenze', class: 'bx-list-check', appSection: AppSection.Summary },
+    { label: 'Resoconto fatture mensile', class: 'bx-money', appSection: AppSection.Invoices },
     { label: 'Impostazioni', class: 'bx-cog', appSection: AppSection.Settings },
     { label: 'Stampe', class: 'bxs-file-pdf', appSection: AppSection.Prints}
   ];

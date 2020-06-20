@@ -11,11 +11,19 @@
         displayFormat="monthAndYear" [calendarOptions]="calendarOptions" [value]="selectedDate">
       </dx-date-box>
     </div>
+
+    <div class="text-primary" *ngIf="selectedKid">
+      <h6 *ngIf="!selectedKid?.contract.monthlyContract">{{ selectedKid?.contract?.description }}
+        ({{ selectedKid?.contract?.minContractValue }}€)</h6>
+      <h6 *ngIf="selectedKid?.contract.monthlyContract">{{ selectedKid?.contract?.description }}
+        {{ selectedKid?.contract?.monthlyHours }} ore (mensile)</h6>
+    </div>
   </div>
 
   <div body *ngIf="!isLoading; else loader;" class="p-5 h-100">
     <div class="container h-100">
-      <dx-data-grid class="h-100" [dataSource]="presenceSummary?.presences" [showBorders]="true" [rowAlternationEnabled]="true">
+      <dx-data-grid class="h-100" [dataSource]="presenceSummary?.presences" [showBorders]="true"
+        [rowAlternationEnabled]="true">
 
         <dxo-export [enabled]="true" [fileName]="fileName"></dxo-export>
         <dxo-paging [enabled]="false"></dxo-paging>
@@ -52,16 +60,35 @@
               {{ data?.data?.eveningExit | date:'shortTime' }}
             </div>
           </dxi-column>
-          <dxi-column name="dayHours" caption="Ore giornaliere" dataType="number"
-            cellTemplate="dayHoursTotalCellTemplate">
-            <div *dxTemplate="let data of 'dayHoursTotalCellTemplate'">
-              {{ data?.data?.morningHours + data?.data?.eveningHours}}
+          <dxi-column name="dailyHours" caption="Ore totali giornaliere"
+            dataType="number" cellTemplate="dailyHoursCellTemplate">
+            <div *dxTemplate="let data of 'dailyHoursCellTemplate'">
+              {{ data?.data?.dailyHours }}
+            </div>
+          </dxi-column>
+          <dxi-column name="dayExtraHours" caption="Extra contratto - {{ selectedKid?.contract.hourCost }}€"
+            dataType="number" cellTemplate="dayExtraHoursTotalCellTemplate">
+            <div *dxTemplate="let data of 'dayExtraHoursTotalCellTemplate'">
+              {{ data?.data?.extraContractHours }}
+            </div>
+          </dxi-column>
+          <dxi-column name="dayExtraServiceHours" caption="Fuori orario - {{ selectedKid?.contract.extraHourCost }}€"
+            dataType="number" cellTemplate="dayExtraServiceHoursTotalCellTemplate">
+            <div *dxTemplate="let data of 'dayExtraServiceHoursTotalCellTemplate'">
+              {{ data?.data?.extraServiceTimeHours }}
             </div>
           </dxi-column>
         </dxi-column>
 
         <dxo-summary [calculateCustomSummary]="calculateMonthHoursTotal">
-          <dxi-total-item name="monthHoursTotal" summaryType="custom" valueFormat="decimal" displayFormat="Ore totali: {0}" showInColumn="dayHours">
+          <dxi-total-item name="monthHoursTotal" summaryType="custom" valueFormat="decimal"
+            displayFormat="Ore totali: {0}" showInColumn="dailyHours">
+          </dxi-total-item>
+          <dxi-total-item name="extraHoursTotal" summaryType="custom" valueFormat="decimal"
+            displayFormat="Ore extra contratto: {0}" showInColumn="dayExtraHours">
+          </dxi-total-item>
+          <dxi-total-item name="extraServiceTimeHoursTotal" summaryType="custom" valueFormat="decimal"
+            displayFormat="Ore extra orario: {0}" showInColumn="dayExtraServiceHours">
           </dxi-total-item>
         </dxo-summary>
 

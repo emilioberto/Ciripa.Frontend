@@ -1,0 +1,81 @@
+<form [formGroup]="formGroup" (ngSubmit)="confirm()">
+  <div mat-dialog-content>
+    <div class="container py-2">
+      <h4 class="text-primary">Nuovo tipo contratto</h4>
+
+      <div class="columns">
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="description">
+            <label class="form-label" for="description">Descrizione</label>
+            <input class="form-input" type="text" id="description" placeholder="Nome" formControlName="description">
+          </app-form-group>
+        </div>
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="monthlyContract">
+            <label class="form-label" for="monthlyContract">Contratto mensile Si/No</label>
+            <label class="form-checkbox">
+              <input #monthlyContract id="monthlyContract" type="checkbox" formControlName="monthlyContract">
+              <i class="form-icon"></i>
+            </label>
+          </app-form-group>
+        </div>
+        <div class="column col-2" *ngIf="!monthlyContract.checked">
+          <app-form-group [formGroup]="formGroup" formControlName="dailyHours">
+            <label class="form-label" for="dailyHours">Ore giornaliere</label>
+            <input class="form-input" type="number" id="dailyHours" placeholder="Ore giornaliere"
+              formControlName="dailyHours">
+          </app-form-group>
+        </div>
+        <div class="column col-2" *ngIf="monthlyContract.checked">
+          <app-form-group [formGroup]="formGroup" formControlName="monthlyHours">
+            <label class="form-label" for="monthlyHours">Ore mensili</label>
+            <input class="form-input" type="number" id="monthlyHours" placeholder="Ore mensili"
+              formControlName="monthlyHours">
+          </app-form-group>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="hourCost">
+            <label class="form-label" for="hourCost">Costo orario</label>
+            <input class="form-input" type="number" id="hourCost" placeholder="Nome" formControlName="hourCost">
+          </app-form-group>
+        </div>
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="extraHourCost">
+            <label class="form-label" for="extraHourCost">Costo extra orario</label>
+            <input class="form-input" type="number" id="extraHourCost" placeholder="Nome"
+              formControlName="extraHourCost">
+          </app-form-group>
+        </div>
+        <div class="column col-4">
+          <app-form-group [formGroup]="formGroup" formControlName="minContractValue">
+            <label class="form-label" for="minContractValue">Costo minimo contratto</label>
+            <input class="form-input" type="number" id="minContractValue" placeholder="Nome"
+              formControlName="minContractValue">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="startTime">
+            <label class="form-label" for="startTime">Dalle</label>
+            <dx-date-box id="startTime" formControlName="startTime" [useMaskBehavior]="true" displayFormat="HH:mm"
+              type="time"></dx-date-box>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="endTime">
+            <label class="form-label" for="endTime">Alle</label>
+            <dx-date-box id="endTime" formControlName="endTime" [useMaskBehavior]="true" displayFormat="HH:mm"
+              type="time"></dx-date-box>
+          </app-form-group>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div mat-dialog-actions class="w-100 buttons-container">
+    <button class="btn btn-primary btn-lg" type="button" (click)="close()">Annulla</button>
+    <button class="btn btn-success btn-lg ml-2" type="submit">Conferma</button>
+  </div>
+
+</form>
