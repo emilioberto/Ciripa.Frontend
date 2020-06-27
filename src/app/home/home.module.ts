@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeStates } from '@app/core/services/navigation.service';
 import { CanDeactivateGuard } from '@app/home/can-deactivate.guard';
+import { ExtraPresencesComponent } from '@app/home/extra-presences/extra-presences.component';
 import { HomeComponent } from '@app/home/home.component';
 import { InvoicesComponent } from '@app/home/invoices/invoices.component';
 import { KidDetailComponent } from '@app/home/kid-detail/kid-detail.component';
@@ -14,14 +15,17 @@ import { PresencesSummaryComponent } from '@app/home/presences-summary/presences
 import { PresencesComponent } from '@app/home/presences/presences.component';
 import { PrintsComponent } from '@app/home/prints/prints.component';
 import { ContractsService } from '@app/home/services/contracts.service';
+import { ExtraPresencesService } from '@app/home/services/extra-presences.service';
 import { InvoicesService } from '@app/home/services/invoices.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { MenuService } from '@app/home/services/menu.service';
 import { PresencesService } from '@app/home/services/presences.service';
 import { SettingsService } from '@app/home/services/settings.service';
+import { NewContractDialogComponent } from '@app/home/settings/new-contract-dialog/new-contract-dialog.component';
 import { SettingsComponent } from '@app/home/settings/settings.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { NewContractDialogComponent } from './settings/new-contract-dialog/new-contract-dialog.component';
+
+import { ExtraPresencesSummaryComponent } from './extra-presences-summary/extra-presences-summary.component';
 
 const routes: Routes = [
   {
@@ -33,6 +37,8 @@ const routes: Routes = [
       { path: HomeStates.Invoices, component: InvoicesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.KidDetail, component: KidDetailComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.Presences, component: PresencesComponent, canDeactivate: [CanDeactivateGuard] },
+      { path: HomeStates.ExtraPresences, component: ExtraPresencesComponent, canDeactivate: [CanDeactivateGuard] },
+      { path: HomeStates.ExtraPresencesSummary, component: ExtraPresencesSummaryComponent, canDeactivate: [CanDeactivateGuard] },
       { path: HomeStates.Prints, component: PrintsComponent },
       { path: HomeStates.Summary, component: PresencesSummaryComponent },
       { path: HomeStates.Settings, component: SettingsComponent, canDeactivate: [CanDeactivateGuard] },
@@ -52,7 +58,9 @@ const routes: Routes = [
     PresencesSummaryComponent,
     InvoicesComponent,
     PrintsComponent,
-    NewContractDialogComponent
+    NewContractDialogComponent,
+    ExtraPresencesComponent,
+    ExtraPresencesSummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -65,6 +73,7 @@ const routes: Routes = [
     InvoicesService,
     MenuService,
     PresencesService,
+    ExtraPresencesService,
     SettingsService,
     CanDeactivateGuard
   ]

@@ -24,8 +24,14 @@ export class MenuService {
       case AppSection.Presences:
         this.navigationSvc.presences();
         break;
-      case AppSection.Summary:
-        this.navigationSvc.summary();
+        case AppSection.ExtraPresences:
+          this.navigationSvc.extraPresences();
+          break;
+      case AppSection.PresencesSummary:
+        this.navigationSvc.presencesSummary();
+        break;
+      case AppSection.ExtraPresencesSummary:
+        this.navigationSvc.extraPresencesSummary();
         break;
       case AppSection.Settings:
         this.navigationSvc.settings();

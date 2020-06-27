@@ -92,6 +92,15 @@
           </app-form-group>
         </div>
         <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="extraServicesEnabled">
+            <label class="form-label" for="extraServicesEnabled">Servizi extra</label>
+            <label class="form-checkbox">
+              <input id="extraServicesEnabled" type="checkbox" formControlName="extraServicesEnabled">
+              <i class="form-icon"></i>
+            </label>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
           <app-form-group [formGroup]="formGroup" formControlName="notes">
             <label class="form-label" for="notes">Note</label>
             <textarea class="form-input" id="notes" placeholder="Note" rows="3" formControlName="notes"></textarea>

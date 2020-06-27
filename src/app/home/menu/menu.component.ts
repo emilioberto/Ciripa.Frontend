@@ -17,9 +17,11 @@ export class MenuComponent extends BaseComponent {
   activeMenuItem$: Observable<AppSection>;
   menuItems: MenuItem[] = [
     { label: 'Bambini', class: 'bx-face', appSection: AppSection.Kids },
-    { label: 'Appello', class: 'bx-calendar', appSection: AppSection.Presences },
-    { label: 'Riepilogo presenze', class: 'bx-list-check', appSection: AppSection.Summary },
+    { label: 'Appello nido', class: 'bx-calendar', appSection: AppSection.Presences },
+    { label: 'Riepilogo presenze nido', class: 'bx-list-check', appSection: AppSection.PresencesSummary },
     { label: 'Resoconto fatture mensile', class: 'bx-money', appSection: AppSection.Invoices },
+    { label: 'Appello servizi extra', class: 'bx-calendar-star', appSection: AppSection.ExtraPresences },
+    { label: 'Riepilogo presenze servizi extra', class: 'bx-money', appSection: AppSection.ExtraPresencesSummary },
     { label: 'Impostazioni', class: 'bx-cog', appSection: AppSection.Settings },
     { label: 'Stampe', class: 'bxs-file-pdf', appSection: AppSection.Prints}
   ];

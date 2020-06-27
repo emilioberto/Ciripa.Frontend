@@ -1,0 +1,93 @@
+<app-hbf-template class="h-100" [overflowScroll]="true">
+
+  <div header class="p-5 pb-0 h-100 text-center">
+    <h2 class="mb-0 text-primary">Appello servizi extra</h2>
+    <div class="header-container">
+      <dx-date-box type="date" [value]="date" (onValueChanged)="onDateChanged($event)" [disabled]="isLoading">
+      </dx-date-box>
+      <button class="btn btn-success btn-lg ml-2" type="button" [disabled]="isLoading" (click)="save()">
+        <i class="bx bx-save mr-2"></i>
+        <span>Salva</span>
+      </button>
+    </div>
+  </div>
+
+  <div body *ngIf="!isLoading; else loader;" class="p-5 h-100">
+    <div class="container h-100">
+      <dx-data-grid class="h-100" [dataSource]="presences" [showBorders]="true" [rowAlternationEnabled]="true">
+        <dxo-editing [allowUpdating]="true" mode="cell"></dxo-editing>
+
+        <dxi-column caption="Bambino">
+          <dxi-column caption="Nome" dataField="kid.firstName" dataType="string" [allowEditing]="false"></dxi-column>
+          <dxi-column caption="Cognome" dataField="kid.lastName" dataType="string" [allowEditing]="false"></dxi-column>
+        </dxi-column>
+        <dxi-column caption="Servizio extra" dataField="specialContractId" dataType="number">
+          <dxo-lookup [dataSource]="specialContracts" displayExpr="description" valueExpr="id">
+          </dxo-lookup>
+        </dxi-column>
+        <dxi-column caption="Mattina">
+          <dxi-column caption="Entrata" dataField="morningEntry" dataType="datetime"
+            cellTemplate="morningEntryCellTemplate" editCellTemplate="morningEntryEditCellTemplate">
+            <div *dxTemplate="let data of 'morningEntryCellTemplate'">
+              {{ data?.data?.morningEntry | date:'shortTime' }}
+              <span class="text-error"
+                *ngIf="!data?.data?.morningEntry && data?.data?.morningExit">{{ requiredErrorMessage }}</span>
+            </div>
+            <div *dxTemplate="let data of 'morningEntryEditCellTemplate'">
+              <dx-date-box (onValueChanged)="onMorningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
+            </div>
+          </dxi-column>
+          <dxi-column caption="Uscita" dataField="morningExit" dataType="datetime"
+            cellTemplate="morningExitCellTemplate" editCellTemplate="morningExitEditCellTemplate">
+            <div *dxTemplate="let data of 'morningExitCellTemplate'">
+              {{ data?.data?.morningExit | date:'shortTime' }}
+              <span class="text-error"
+                *ngIf="!data?.data?.morningExit && data?.data?.morningEntry">{{ requiredErrorMessage }}</span>
+            </div>
+            <div *dxTemplate="let data of 'morningExitEditCellTemplate'">
+              <dx-date-box (onValueChanged)="onMorningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
+            </div>
+          </dxi-column>
+        </dxi-column>
+        <dxi-column caption="Pomeriggio">
+          <dxi-column caption="Entrata" dataField="eveningEntry" dataType="datetime"
+            cellTemplate="eveningEntryCellTemplate" editCellTemplate="eveningEntryEditCellTemplate">
+            <div *dxTemplate="let data of 'eveningEntryCellTemplate'">
+              {{ data?.data?.eveningEntry | date:'shortTime' }}
+              <span class="text-error"
+                *ngIf="!data?.data?.eveningEntry && data?.data?.eveningExit">{{ requiredErrorMessage }}</span>
+            </div>
+            <div *dxTemplate="let data of 'eveningEntryEditCellTemplate'">
+              <dx-date-box (onValueChanged)="onEveningEntryChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
+            </div>
+          </dxi-column>
+          <dxi-column caption="Uscita" dataField="eveningExit" dataType="datetime"
+            cellTemplate="eveningExitCellTemplate" editCellTemplate="eveningExitEditCellTemplate">
+            <div *dxTemplate="let data of 'eveningExitCellTemplate'">
+              {{ data?.data?.eveningExit | date:'shortTime' }}
+              <span class="text-error"
+                *ngIf="!data?.data?.eveningExit && data?.data?.eveningEntry">{{ requiredErrorMessage }}</span>
+            </div>
+            <div *dxTemplate="let data of 'eveningExitEditCellTemplate'">
+              <dx-date-box (onValueChanged)="onEveningExitChanged($event, data?.data?.id)" [useMaskBehavior]="true"
+                displayFormat="HH:mm" type="time" [value]="data?.data?.id"></dx-date-box>
+            </div>
+          </dxi-column>
+        </dxi-column>
+      </dx-data-grid>
+    </div>
+  </div>
+
+  <div footer class="h-100">
+  </div>
+
+</app-hbf-template>
+
+<ng-template #loader>
+  <div body class="p-5 h-100">
+    <app-loader></app-loader>
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
 <form [formGroup]="formGroup" class="container h-100 p-5 bg-secondary" (ngSubmit)="save()">
-  <app-hbf-template class="h-100">
-    <div header class="p-5 pb-0 h-100 text-center">
+  <app-hbf-template class="h-100" [overflowScroll]="true">
+    <div header class="p-5 pb-2 h-100 text-center">
       <h2 class="mb-0 text-primary">Elenco bambini</h2>
       <div class="text-right">
         <button class="btn btn-success btn-lg" type="submit" [disabled]="isLoading">

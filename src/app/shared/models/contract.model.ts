@@ -10,3 +10,7 @@ export interface Contract {
   endTime: Date;
   minContractValue: number;
 }
+
+export interface SpecialContract extends Contract {
+  weeklyContract: boolean;
+}
