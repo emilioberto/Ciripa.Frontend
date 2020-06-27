@@ -18,12 +18,18 @@
       </button>
     </section>
 
+    <section class="mt-4">
+      <button class="btn btn-secondary btn-lg" type="submit" [disabled]="isLoading" (click)="printPresences(true)">
+        <span>Stampa appello vuoto - Attività extra</span>
+      </button>
+    </section>
+
     <section class="mt-2 d-flex">
       <dx-date-box class="mr-2" type="date" [disabled]="isLoading" displayFormat="monthAndYear" [calendarOptions]="calendarOptions"
-        [(ngModel)]="summarySelectedMonth">
+        [(ngModel)]="selectedMonth">
       </dx-date-box>
-      <button class="btn btn-secondary btn-lg" type="submit" [disabled]="isLoading || !selectedMonth" (click)="printMonthlySummary()">
-        <span>Stampa riepilogo mensile</span>
+      <button class="btn btn-secondary btn-lg" type="submit" [disabled]="isLoading || !selectedMonth" (click)="printMonthlyPresences(true)">
+        <span>Stampa appello vuoto per tutto il mese - Attività extra</span>
       </button>
     </section>
   </div>

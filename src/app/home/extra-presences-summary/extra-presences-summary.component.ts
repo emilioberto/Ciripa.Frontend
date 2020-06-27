@@ -89,7 +89,7 @@ export class ExtraPresencesSummaryComponent extends BaseComponent {
   private loadKids(): void {
     this.kidsSvc.getList()
       .pipe(
-        map(x => x.filter(x => x.extraServicesEnabled)),
+        map(x => x.filter(y => y.extraServicesEnabled)),
         handleLoading(this)
       )
       .subscribe(

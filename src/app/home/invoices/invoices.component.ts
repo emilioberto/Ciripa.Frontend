@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -11,7 +12,7 @@ import { InvoicesService } from '@app/home/services/invoices.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ConfirmDialogComponent } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
 import { Invoice } from '@app/shared/models/invoice.model';
-import { PaymentMethod, PaymentMethodsDataSource } from '@app/shared/models/payment-method.enum';
+import { PaymentMethodsDataSource } from '@app/shared/models/payment-method.enum';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 
 @Component({
@@ -34,7 +35,8 @@ export class InvoicesComponent extends BaseComponent {
     private invoicesSvc: InvoicesService,
     private exceptionsSvc: ExceptionsService,
     private toastsSvc: ToastsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private datePipe: DatePipe
   ) {
     super();
   }
@@ -93,6 +95,14 @@ export class InvoicesComponent extends BaseComponent {
       }
       return x;
     });
+  }
+
+  get fileName(): string {
+    return `Resoconto fatture mese ${this.datePipe.transform(this.selectedDate, 'MMMM yyyy')}`;
+  }
+
+  print(): void {
+    // TODO
   }
 
   private loadData(): void {
