@@ -4,23 +4,27 @@ import { Component } from '@angular/core';
 import DataSource from 'devextreme/data/data_source';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { zip } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
+import { ContractsService } from '@app/home/services/contracts.service';
+import { ExtraPresencesService } from '@app/home/services/extra-presences.service';
 import { KidsService } from '@app/home/services/kids.service';
-import { PresencesService } from '@app/home/services/presences.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ByDateFilter } from '@app/shared/models/by-date-filter.model';
+import { SpecialContract } from '@app/shared/models/contract.model';
 import { Kid } from '@app/shared/models/kid.model';
 import { PresencesSummary } from '@app/shared/models/presences-summary.model';
 import { SelectBoxDataSourceItem } from '@app/shared/models/select-box-data-source-item.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 
 @Component({
-  selector: 'app-presences-summary',
-  templateUrl: './presences-summary.component.html',
-  styleUrls: ['./presences-summary.component.scss'],
+  selector: 'app-extra-presences-summary',
+  templateUrl: './extra-presences-summary.component.html',
+  styleUrls: ['./extra-presences-summary.component.scss'],
 })
-export class PresencesSummaryComponent extends BaseComponent {
+export class ExtraPresencesSummaryComponent extends BaseComponent {
   selectedDate = new Date();
   selectedKidId: number;
   fileName: string;
@@ -30,12 +34,14 @@ export class PresencesSummaryComponent extends BaseComponent {
   kids: Kid[];
   kidsDataSource: DataSource;
   presenceSummary: PresencesSummary;
+  specialContracts: SpecialContract[];
 
   constructor(
     private kidsSvc: KidsService,
-    private presencesSvc: PresencesService,
+    private extraPresencesSvc: ExtraPresencesService,
     private datePipe: DatePipe,
-    private exceptionsSvc: ExceptionsService
+    private exceptionsSvc: ExceptionsService,
+    private contractsSvc: ContractsService
   ) {
     super();
 
@@ -81,9 +87,12 @@ export class PresencesSummaryComponent extends BaseComponent {
 
   print(): void {
     const doc = new jsPDF();
-    const pdfName = `Riepilogo presenze ${this.selectedKid.firstName} ${
-      this.selectedKid.lastName
-    } ${this.datePipe.transform(this.selectedDate, 'MMMM yyyy')}`;
+    const pdfName = `Riepilogo presenze servizi extra ${
+      this.selectedKid.firstName
+    } ${this.selectedKid.lastName} ${this.datePipe.transform(
+      this.selectedDate,
+      'MMMM yyyy'
+    )}`;
     doc.setFontSize(18);
     doc.text(pdfName, 14, 22);
     doc.setFontSize(11);
@@ -97,7 +106,7 @@ export class PresencesSummaryComponent extends BaseComponent {
         'Uscita matt.',
         'Entrata pom.',
         'Uscita pom.',
-        `Ore gg`,
+        ...this.specialContracts.map((x) => x.description),
         `Extra contratto ${this.selectedKid.contract.hourCost}€`,
         `Fuori orario serv. ${this.selectedKid.contract.extraHourCost}€`,
       ],
@@ -110,7 +119,12 @@ export class PresencesSummaryComponent extends BaseComponent {
         this.datePipe.transform(p.morningExit, 'shortTime'),
         this.datePipe.transform(p.eveningEntry, 'shortTime'),
         this.datePipe.transform(p.eveningExit, 'shortTime'),
-        p.dailyHours,
+        ...this.specialContracts.map((x) => {
+          if ((p as any).specialContractId === x.id) {
+            return p.dailyHours;
+          }
+          return null;
+        }),
         p.extraContractHours,
         p.extraServiceTimeHours,
       ];
@@ -122,7 +136,9 @@ export class PresencesSummaryComponent extends BaseComponent {
       null,
       null,
       null,
-      `${this.presenceSummary.totalHours} ore`,
+      `${presencesBody.reduce((tot, row) => tot + (row[5] as number), 0)} ore`,
+      `${presencesBody.reduce((tot, row) => tot + (row[6] as number), 0)} ore`,
+      `${presencesBody.reduce((tot, row) => tot + (row[7] as number), 0)} ore`,
       `${this.presenceSummary.totalExtraContractHours} ore`,
       `${this.presenceSummary.totalExtraServiceTimeHours} ore`,
     ]);
@@ -130,7 +146,6 @@ export class PresencesSummaryComponent extends BaseComponent {
     doc.autoTable({
       head: presencesHead,
       body: presencesBody,
-      footer: presencesHead,
       startY: 30,
       showHead: 'firstPage',
     });
@@ -141,7 +156,10 @@ export class PresencesSummaryComponent extends BaseComponent {
   private loadKids(): void {
     this.kidsSvc
       .getList()
-      .pipe(handleLoading(this))
+      .pipe(
+        map((x) => x.filter((y) => y.extraServicesEnabled)),
+        handleLoading(this)
+      )
       .subscribe(
         (kids) => {
           this.kids = kids;
@@ -159,11 +177,16 @@ export class PresencesSummaryComponent extends BaseComponent {
     )}_${this.selectedKid?.lastName}_${this.selectedKid?.firstName}_`;
 
     const filter: ByDateFilter = { date: this.selectedDate };
-    this.presencesSvc
-      .getKidPresencesByMonth(this.selectedKidId, filter)
+    zip(
+      this.extraPresencesSvc.getKidPresencesByMonth(this.selectedKidId, filter),
+      this.contractsSvc.getSpecialContractsList()
+    )
       .pipe(handleLoading(this))
       .subscribe(
-        (presencesSummary) => (this.presenceSummary = presencesSummary),
+        ([presencesSummary, specialContracts]) => {
+          this.presenceSummary = presencesSummary;
+          this.specialContracts = specialContracts;
+        },
         (err) => this.exceptionsSvc.handle(err)
       );
   }

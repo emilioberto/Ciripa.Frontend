@@ -2,34 +2,39 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { DxDataGridComponent } from 'devextreme-angular';
-import { Observable, of } from 'rxjs';
+import { Observable, of, zip } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { ToastsService } from '@app/core/services/toasts.service';
+import { ContractsService } from '@app/home/services/contracts.service';
+import { ExtraPresencesService } from '@app/home/services/extra-presences.service';
 import { PresencesService } from '@app/home/services/presences.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ConfirmDialogComponent } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
+import { SpecialContract } from '@app/shared/models/contract.model';
 import { Presence } from '@app/shared/models/presence.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 
 @Component({
-  selector: 'app-presences',
-  templateUrl: './presences.component.html',
-  styleUrls: ['./presences.component.scss']
+  selector: 'app-extra-presences',
+  templateUrl: './extra-presences.component.html',
+  styleUrls: ['./extra-presences.component.scss']
 })
-export class PresencesComponent extends BaseComponent {
+export class ExtraPresencesComponent extends BaseComponent {
 
   @ViewChild(DxDataGridComponent) grid: DxDataGridComponent;
 
   date = new Date();
   presences: Presence[];
+  specialContracts: SpecialContract[];
   requiredErrorMessage = 'Inserire orario';
   isDirty = false;
 
   constructor(
-    private presencesSvc: PresencesService,
+    private extraPresencesSvc: ExtraPresencesService,
     private exceptionsSvc: ExceptionsService,
+    private contractsSvc: ContractsService,
     private toastsSvc: ToastsService,
     public dialog: MatDialog
   ) {
@@ -49,7 +54,7 @@ export class PresencesComponent extends BaseComponent {
       return;
     }
 
-    this.presencesSvc.update(this.presences)
+    this.extraPresencesSvc.update(this.presences)
       .pipe(handleLoading(this))
       .subscribe(
         () => {
@@ -143,11 +148,15 @@ export class PresencesComponent extends BaseComponent {
   }
 
   private loadData(): void {
-    this.presencesSvc.getList({ date: this.date })
+    zip(
+      this.extraPresencesSvc.getList({ date: this.date }),
+      this.contractsSvc.getSpecialContractsList()
+    )
       .pipe(handleLoading(this))
       .subscribe(
-        presences => {
+        ([presences, specialContracts]) => {
           this.presences = presences;
+          this.specialContracts = specialContracts;
           this.isDirty = false;
         },
         err => this.exceptionsSvc.handle(err)

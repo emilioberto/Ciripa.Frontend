@@ -1,4 +1,5 @@
-import { ContractType } from '@app/shared/models/contract-type.enum';
+import { Contract } from '@app/shared/models/contract.model';
+import { Parent } from '@app/shared/models/parent.model';
 import { PaymentMethod } from '@app/shared/models/payment-method.enum';
 
 export interface Kid {
@@ -6,20 +7,16 @@ export interface Kid {
   firstName: string;
   lastName: string;
   fiscalCode: string;
-  birthdate: string;
-  from: string | null;
-  to: string | null;
+  birthdate?: Date;
+  from: Date;
+  to?: Date;
+  contractId: number;
+  contract: Contract;
   notes: string;
-  contractType: ContractType;
-  contractValue: number;
-  subscriptionPaid: boolean;
+  subscriptionPaidDate: string;
   subscriptionAmount: number;
-  parentFirstName: string;
-  parentLastName: string;
-  parentFiscalCode: string;
-  address: string;
-  city: string;
-  cap: string;
-  province: string;
   paymentMethod: PaymentMethod;
+  extraServicesEnabled: boolean;
+  parent1: Parent;
+  parent2: Parent;
 }

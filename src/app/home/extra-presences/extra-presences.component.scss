@@ -1,0 +1,17 @@
+@import "src/styles/variables";
+
+.kid-name {
+  font-size: $font-size-lg;
+  color: $primary-color;
+  text-transform: uppercase;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  dx-date-box {
+    width: 200px;
+  }
+}

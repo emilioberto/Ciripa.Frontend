@@ -1,8 +1,11 @@
 export enum AppSection {
   Kids,
   Invoices,
+  YearInvoicesTotal,
   Presences,
-  Summary,
+  ExtraPresences,
+  ExtraPresencesSummary,
+  PresencesSummary,
   Settings,
   Prints
 }

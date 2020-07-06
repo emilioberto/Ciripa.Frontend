@@ -9,12 +9,14 @@ import { filter, switchMap, take } from 'rxjs/operators';
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { NavigationService } from '@app/core/services/navigation.service';
 import { ToastsService } from '@app/core/services/toasts.service';
+import { ContractsService } from '@app/home/services/contracts.service';
 import { KidsService } from '@app/home/services/kids.service';
 import { SettingsService } from '@app/home/services/settings.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ConfirmDialogComponent } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
-import { ContractType, ContractTypesDataSource } from '@app/shared/models/contract-type.enum';
+import { Contract } from '@app/shared/models/contract.model';
 import { Kid } from '@app/shared/models/kid.model';
+import { Parent } from '@app/shared/models/parent.model';
 import { PaymentMethodsDataSource } from '@app/shared/models/payment-method.enum';
 import { Settings } from '@app/shared/models/settings.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
@@ -32,7 +34,7 @@ export class KidDetailComponent extends BaseComponent {
   settings: Settings;
   showContractValue = false;
 
-  contractTypesDataSource = ContractTypesDataSource;
+  contracts: Contract[];
   paymentMethodsDataSource = PaymentMethodsDataSource;
 
   constructor(
@@ -40,6 +42,7 @@ export class KidDetailComponent extends BaseComponent {
     private fb: FormBuilder,
     private kidsSvc: KidsService,
     private settingsSvc: SettingsService,
+    private contractsSvc: ContractsService,
     private navigationSvc: NavigationService,
     private exceptionsSvc: ExceptionsService,
     private toastsSvc: ToastsService,
@@ -57,7 +60,7 @@ export class KidDetailComponent extends BaseComponent {
             this.kidId = params.id;
             this.loadData();
           } else {
-            this.loadSettings();
+            this.loadSettingsAndContracts();
           }
         }
       );
@@ -134,24 +137,41 @@ export class KidDetailComponent extends BaseComponent {
       );
   }
 
+  get parent1FormGroup(): FormGroup {
+    return this.formGroup.controls[nameof<Kid>('parent1')] as FormGroup;
+  }
+
+  get parent2FormGroup(): FormGroup {
+    return this.formGroup.controls[nameof<Kid>('parent2')] as FormGroup;
+  }
+
   private loadData(): void {
-    zip(this.kidsSvc.get(this.kidId), this.settingsSvc.get())
+    zip(
+      this.kidsSvc.get(this.kidId),
+      this.settingsSvc.get(),
+      this.contractsSvc.getList()
+    )
       .pipe(handleLoading(this))
       .subscribe(
-        ([kid, settings]) => {
+        ([kid, settings, contracts]) => {
           this.formGroup.patchValue(kid);
           this.settings = settings;
+          this.contracts = contracts;
         },
         err => this.exceptionsSvc.handle(err)
       );
   }
 
-  private loadSettings(): void {
-    this.settingsSvc.get()
+  private loadSettingsAndContracts(): void {
+    zip(
+      this.settingsSvc.get(),
+      this.contractsSvc.getList()
+    )
       .pipe(handleLoading(this))
       .subscribe(
-        settings => {
+        ([settings, contracts]) => {
           this.settings = settings;
+          this.contracts = contracts;
           this.formGroup.patchValue({ [nameof<Kid>('subscriptionAmount')]: settings.subscriptionAmount });
         },
         err => this.exceptionsSvc.handle(err)
@@ -160,6 +180,7 @@ export class KidDetailComponent extends BaseComponent {
 
   private buildForm(): void {
     this.formGroup = this.fb.group({
+      [nameof<Kid>('id')]: { value: 0, disabled: true },
       [nameof<Kid>('firstName')]: ['', Validators.required],
       [nameof<Kid>('lastName')]: ['', Validators.required],
       [nameof<Kid>('fiscalCode')]: '',
@@ -167,28 +188,28 @@ export class KidDetailComponent extends BaseComponent {
       [nameof<Kid>('from')]: [new Date(), Validators.required],
       [nameof<Kid>('to')]: null,
       [nameof<Kid>('notes')]: '',
-      [nameof<Kid>('contractType')]: ['', Validators.required],
-      [nameof<Kid>('contractValue')]: 0,
-      [nameof<Kid>('subscriptionPaid')]: false,
+      [nameof<Kid>('contractId')]: ['', Validators.required],
+      [nameof<Kid>('subscriptionPaidDate')]: null,
       [nameof<Kid>('subscriptionAmount')]: 0,
-      [nameof<Kid>('parentFirstName')]: ['', Validators.required],
-      [nameof<Kid>('parentLastName')]: ['', Validators.required],
-      [nameof<Kid>('parentFiscalCode')]: '',
-      [nameof<Kid>('address')]: '',
-      [nameof<Kid>('city')]: '',
-      [nameof<Kid>('cap')]: '',
-      [nameof<Kid>('province')]: '',
+      [nameof<Kid>('extraServicesEnabled')]: false,
+      [nameof<Kid>('parent1')]: this.buildParentFormGroup(true),
+      [nameof<Kid>('parent2')]: this.buildParentFormGroup(),
       [nameof<Kid>('paymentMethod')]: ['', Validators.required],
     });
+  }
 
-    this.subscription.add(
-      this.formGroup.valueChanges
-        .subscribe((kid: Kid) => {
-          this.showContractValue = kid.contractType === ContractType.Contract;
-          if (kid.contractType === ContractType.Hours) {
-            this.formGroup.patchValue({ [nameof<Kid>('contractValue')]: 0 }, { emitEvent: false });
-          }
-        })
-    );
+  private buildParentFormGroup(required: boolean = false): FormGroup {
+    return this.fb.group({
+      [nameof<Parent>('firstName')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('lastName')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('fiscalCode')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('phone')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('email')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('address')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('city')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('cap')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('province')]: ['', required ? Validators.required : null],
+      [nameof<Parent>('billing')]: false
+    });
   }
 }

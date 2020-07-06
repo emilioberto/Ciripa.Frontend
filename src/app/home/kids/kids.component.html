@@ -9,21 +9,41 @@
     </div>
   </div>
   <div body *ngIf="!isLoading; else loader;" class="p-5 h-100">
-    <dx-data-grid class="h-100" [dataSource]="dataSource" [showBorders]="true" [rowAlternationEnabled]="true" (onSelectionChanged)="onSelection($event)">
+    <dx-data-grid class="h-100" [dataSource]="dataSource" [showBorders]="true" [rowAlternationEnabled]="true"
+      (onSelectionChanged)="onSelection($event)" [allowColumnResizing]="true">
       <dxo-paging [pageSize]="10"></dxo-paging>
       <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 20]" [showInfo]="true">
       </dxo-pager>
       <dxo-selection mode="single"></dxo-selection>
+      <dxo-state-storing [enabled]="true" type="localStorage" storageKey="'kidsGridState'"></dxo-state-storing>
+      <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
 
       <dxi-column caption="Bambino">
         <dxi-column caption="Nome" dataField="firstName" dataType="string"></dxi-column>
         <dxi-column caption="Cognome" dataField="lastName" dataType="string"></dxi-column>
         <dxi-column caption="Codice fiscale" dataField="fiscalCode" dataType="string"></dxi-column>
-        <dxi-column caption="Data di nascita" dataField="birthdate" dataType="date" format="dd/MM/yyyy"></dxi-column>
+        <dxi-column caption="Contratto" dataField="contract.description" dataType="date" format="dd/MM/yyyy">
+        </dxi-column>
       </dxi-column>
-      <dxi-column caption="Genitore">
-        <dxi-column caption="Nome" dataField="parentFirstName" dataType="string"></dxi-column>
-        <dxi-column caption="Cognome" dataField="parentLastName" dataType="string"></dxi-column>
+      <dxi-column caption="Genitore 1">
+        <dxi-column caption="Nome" dataField="parent1.firstName" dataType="string"></dxi-column>
+        <dxi-column caption="Cognome" dataField="parent1.lastName" dataType="string"></dxi-column>
+        <dxi-column caption="Codice Fiscale" dataField="parent1.fiscalCode" dataType="string"></dxi-column>
+        <dxi-column caption="Indirizzo" dataField="parent1.fiscalCode" dataType="string" cellTemplate="cellTemplate">
+          <div *dxTemplate="let data of 'cellTemplate'">
+            {{ data?.data?.parent1?.address }} {{ data?.data?.parent1?.city }} {{ data?.data?.parent1?.cap }} - {{ data?.data?.parent1?.province }}
+          </div>
+        </dxi-column>
+      </dxi-column>
+      <dxi-column caption="Genitore 2" [visible]="true">
+        <dxi-column caption="Nome" dataField="parent2.firstName" dataType="string"></dxi-column>
+        <dxi-column caption="Cognome" dataField="parent2.lastName" dataType="string"></dxi-column>
+        <dxi-column caption="Codice Fiscale" dataField="parent2.fiscalCode" dataType="string"></dxi-column>
+        <dxi-column caption="Indirizzo" dataField="parent2.fiscalCode" dataType="string" cellTemplate="cellTemplate">
+          <div *dxTemplate="let data of 'cellTemplate'">
+            {{ data?.data?.parent2?.address }} {{ data?.data?.parent2?.city }} {{ data?.data?.parent2?.cap }} - {{ data?.data?.parent2?.province }}
+          </div>
+        </dxi-column>
       </dxi-column>
     </dx-data-grid>
   </div>

@@ -12,4 +12,6 @@ export interface Invoice {
   invoiceAmount?: number;
   paymentMethod?: PaymentMethod;
   paymentDate?: Date;
+  subscriptionAmount?: number;
+  subscriptionPaidDate?: number;
 }

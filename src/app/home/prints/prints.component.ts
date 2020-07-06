@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { map } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { InvoicesService } from '@app/home/services/invoices.service';
@@ -39,18 +40,25 @@ export class PrintsComponent extends BaseComponent {
 
   internalOnDestroy(): void { }
 
-  printPresences(): void {
+  printPresences(extraActivities: boolean = false): void {
     const todayFilter: ByDateFilter = { date: new Date() };
     this.presencesSvc.getList(todayFilter)
       .pipe(
+        map(presences => {
+          return extraActivities
+            ? presences.filter(x => x.kid.extraServicesEnabled)
+            : presences;
+        }),
         handleLoading(this)
       )
       .subscribe(
         presences => {
           const doc = new jsPDF();
 
-          const pdfName = `Appello ${this.datePipe.transform(new Date(), 'shortDate')}`;
-
+          let pdfName = `Appello ${this.datePipe.transform(new Date(), 'shortDate')}`;
+          if (extraActivities) {
+            pdfName = `Appello attività extra ${this.datePipe.transform(new Date(), 'shortDate')}`;
+          }
           doc.setFontSize(18);
           doc.text(pdfName, 14, 22);
           doc.setFontSize(11);
@@ -76,17 +84,26 @@ export class PrintsComponent extends BaseComponent {
       );
   }
 
-  printMonthlyPresences(): void {
+  printMonthlyPresences(extraActivities: boolean = false): void {
     const todayFilter: ByDateFilter = { date: new Date() };
     this.presencesSvc.getList(todayFilter)
       .pipe(
+        map(presences => {
+          return extraActivities
+            ? presences.filter(x => x.kid.extraServicesEnabled)
+            : presences;
+        }),
         handleLoading(this)
       )
       .subscribe(
         presences => {
           const doc = new jsPDF();
 
-          const pdfName = `Appello mensile`;
+          let pdfName = `Appello mensile`;
+          if (extraActivities) {
+            pdfName = `${pdfName} attività extra`;
+          }
+
           const days = this.getDaysInMonth(this.selectedMonth);
           const presencesBody = this.presencesTableMapper(presences);
 
@@ -105,37 +122,6 @@ export class PrintsComponent extends BaseComponent {
           });
 
           doc.deletePage(1);
-          doc.save(pdfName);
-        },
-        err => this.exceptionsSvc.handle(err)
-      );
-  }
-
-  printMonthlySummary(): void {
-    const todayFilter: ByDateFilter = { date: this.summarySelectedMonth };
-    this.invoicesSvc.getList(todayFilter)
-      .pipe(
-        handleLoading(this)
-      )
-      .subscribe(
-        invoices => {
-          const doc = new jsPDF();
-
-          const pdfName = `Riepilogo del mese ${this.datePipe.transform(this.summarySelectedMonth, 'MMMM')}`;
-
-          const presencesHead = [
-            [`Appello ${this.datePipe.transform(this.summarySelectedMonth, 'MMMM')}`, null, null, null, null, null, null, null],
-            ['Nome', 'Cognome', 'Metodo pagamento', 'Data pagamento', 'Numero fattura', 'Ore totali', 'Costo previsto', 'Costo fatturato']
-          ];
-          const presencesBody = this.summaryTableMapper(invoices);
-
-          doc.autoTable({
-            head: presencesHead,
-            body: presencesBody,
-            startY: 30,
-            showHead: 'firstPage',
-          });
-
           doc.save(pdfName);
         },
         err => this.exceptionsSvc.handle(err)
@@ -164,7 +150,11 @@ export class PrintsComponent extends BaseComponent {
   getDaysInMonth(date: Date): Date[] {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return (new Array(31)).fill('').map((v, i) => new Date(year, month - 1, i + 1)).filter(v => v.getMonth() === month - 1);
+    return (new Array(31)).fill('').map((v, i) => new Date(year, month - 1, i + 1)).filter(v => v.getMonth() === month - 1).filter(x => !this.isWeekend(x));
+  }
+
+  private isWeekend(date: Date): boolean {
+    return date.getDay() === 6 || date.getDay() === 0;
   }
 
 }

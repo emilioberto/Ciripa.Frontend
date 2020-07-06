@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Observable, of } from 'rxjs';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { Observable, of, zip } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { ToastsService } from '@app/core/services/toasts.service';
+import { ContractsService } from '@app/home/services/contracts.service';
 import { SettingsService } from '@app/home/services/settings.service';
+import { NewContractDialogComponent } from '@app/home/settings/new-contract-dialog/new-contract-dialog.component';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ConfirmDialogComponent } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
+import { Contract } from '@app/shared/models/contract.model';
 import { Settings } from '@app/shared/models/settings.model';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 import { applyOnAllControls, nameof } from '@app/shared/utils/utils';
@@ -22,12 +25,15 @@ import { applyOnAllControls, nameof } from '@app/shared/utils/utils';
 export class SettingsComponent extends BaseComponent {
 
   formGroup: FormGroup;
+  contracts: Contract[];
+  settings: Settings;
 
   constructor(
     private settingsSvc: SettingsService,
     private fb: FormBuilder,
     private exceptionsSvc: ExceptionsService,
     private toastsSvc: ToastsService,
+    private contractsSvc: ContractsService,
     public dialog: MatDialog
   ) {
     super();
@@ -38,7 +44,9 @@ export class SettingsComponent extends BaseComponent {
     this.loadData();
   }
 
-  internalOnDestroy(): void { }
+  internalOnDestroy(): void {
+    this.loadData();
+  }
 
   canDeactivate(): Observable<boolean> {
     if (this.formGroup.dirty) {
@@ -74,6 +82,19 @@ export class SettingsComponent extends BaseComponent {
       );
   }
 
+  createContract(): void {
+    const createContractDialog = this.dialog.open(NewContractDialogComponent, {
+      data: this.settings
+    });
+
+    createContractDialog.afterClosed()
+      .pipe(take(1))
+      .subscribe(
+        () => this.loadData(),
+        err => this.exceptionsSvc.handle(err)
+      );
+  }
+
   private buildForm(): void {
     this.formGroup = this.fb.group({
       [nameof<Settings>('hourCost')]: [null, Validators.required],
@@ -83,10 +104,17 @@ export class SettingsComponent extends BaseComponent {
   }
 
   private loadData(): void {
-    this.settingsSvc.get()
+    zip(
+      this.settingsSvc.get(),
+      this.contractsSvc.getList()
+    )
       .pipe(handleLoading(this))
       .subscribe(
-        settings => this.formGroup.patchValue(settings),
+        ([settings, contracts]) => {
+          this.formGroup.patchValue(settings);
+          this.settings = settings;
+          this.contracts = contracts;
+        },
         err => this.exceptionsSvc.handle(err)
       );
   }

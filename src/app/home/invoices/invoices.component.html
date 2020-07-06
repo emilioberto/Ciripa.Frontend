@@ -1,7 +1,7 @@
 <app-hbf-template class="h-100" [overflowScroll]="true">
 
   <div header class="p-5 pb-0 h-100 text-center">
-    <h2 class="mb-0 text-primary">Fatturate</h2>
+    <h2 class="mb-0 text-primary">Resoconto fatture mensile</h2>
     <div class="header-container">
       <dx-date-box type="date" (onValueChanged)="onDateChanged($event)" [disabled]="isLoading"
         displayFormat="monthAndYear" [calendarOptions]="calendarOptions" [value]="selectedDate">
@@ -17,10 +17,11 @@
     <div class="container h-100">
       <dx-data-grid class="h-100" [dataSource]="invoices" [showBorders]="true" [rowAlternationEnabled]="true">
         <dxo-editing [allowUpdating]="true" mode="cell"></dxo-editing>
+        <dxo-export [enabled]="true" [fileName]="fileName"></dxo-export>
 
-        <dxi-column caption="Bambino">
-          <dxi-column caption="Nome" dataField="kid.firstName" dataType="string" [allowEditing]="false"></dxi-column>
-          <dxi-column caption="Cognome" dataField="kid.lastName" dataType="string" [allowEditing]="false"></dxi-column>
+        <dxi-column caption="Genitore">
+          <dxi-column caption="Nome" dataField="billingParent.firstName" dataType="string" [allowEditing]="false"></dxi-column>
+          <dxi-column caption="Cognome" dataField="billingParent.lastName" dataType="string" [allowEditing]="false"></dxi-column>
         </dxi-column>
         <dxi-column caption="Metodo pagamento" dataField="paymentMethod">
           <dxo-lookup [dataSource]="paymentMethods" valueExpr="id" displayExpr="description">
@@ -38,17 +39,22 @@
         </dxi-column>
         <dxi-column caption="Numero fattura" dataField="number" dataType="string">
         </dxi-column>
-        <dxi-column caption="Ore totali" dataField="hours" dataType="number" [allowEditing]="false">
+        <dxi-column caption="Iscrizione" dataField="subscriptionAmount" dataType="number" [allowEditing]="false">
         </dxi-column>
-        <dxi-column caption="Totale app" dataField="amount" dataType="number" [allowEditing]="false">
+        <dxi-column caption="Data pagamento iscrizione" dataField="subscriptionPaidDate" dataType="date"
+          [allowEditing]="false">
         </dxi-column>
-        <dxi-column caption="Totale su fattura" dataField="invoiceAmount" dataType="number">
+        <dxi-column caption="Totale" dataField="amount" dataType="number">
         </dxi-column>
       </dx-data-grid>
     </div>
   </div>
 
-  <div footer class="h-100">
+  <div footer class="h-100 p-5 text-center">
+    <button class="btn btn-success btn-lg ml-2" type="button" (click)="print()">
+      <i class="bx bxs-file-pdf mr-2"></i>
+      <span>Stampa</span>
+    </button>
   </div>
 
 </app-hbf-template>

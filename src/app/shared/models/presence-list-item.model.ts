@@ -1,11 +1,14 @@
 export interface PresenceListItem {
-  id: number | null;
+  id?: number;
   date: Date;
-  morningEntry: Date;
-  morningExit: Date;
+  morningEntry?: string;
+  morningExit?: string;
   morningHours: number;
-  eveningEntry: Date;
-  eveningExit: Date;
+  eveningEntry?: string;
+  eveningExit?: string;
   eveningHours: number;
+  dailyHours: number;
+  extraContractHours: number;
+  extraServiceTimeHours: number;
   kidId: number;
 }

@@ -24,7 +24,7 @@ export function applyOnAllControls(formGroup: FormGroup, action: (control: FormC
 
     const childFormGroup = control as FormGroup;
     if (childFormGroup && childFormGroup.controls) {
-      this.applyOnAllControls(childFormGroup, action);
+      applyOnAllControls(childFormGroup, action);
     }
   });
 }

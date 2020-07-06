@@ -12,6 +12,12 @@
     </div>
     <div body *ngIf="!isLoading; else loader;" class="p-5 h-100 bg-secondary">
       <div class="columns">
+        <div class="column col-1">
+          <app-form-group [formGroup]="formGroup" formControlName="id">
+            <label class="form-label" for="id">N°</label>
+            <input class="form-input" type="text" id="id" placeholder="N°" formControlName="id">
+          </app-form-group>
+        </div>
         <div class="column col-3">
           <app-form-group [formGroup]="formGroup" formControlName="firstName">
             <label class="form-label" for="firstName">Nome</label>
@@ -31,15 +37,13 @@
               formControlName="fiscalCode">
           </app-form-group>
         </div>
-        <div class="column col-3">
+        <div class="column col-2">
           <app-form-group [formGroup]="formGroup" formControlName="birthdate">
             <label class="form-label" for="birthdate">Data di nascita</label>
             <dx-date-box id="birthdate" type="date" formControlName="birthdate">
             </dx-date-box>
           </app-form-group>
         </div>
-      </div>
-      <div class="columns">
         <div class="column col-3">
           <app-form-group [formGroup]="formGroup" formControlName="from">
             <label class="form-label" for="from">Dal</label>
@@ -55,106 +59,191 @@
           </app-form-group>
         </div>
         <div class="column col-3">
-          <app-form-group [formGroup]="formGroup" formControlName="contractType">
+          <app-form-group [formGroup]="formGroup" formControlName="contractId">
             <label class="form-label" for="contract-type">Tipo contratto</label>
-            <dx-select-box [dataSource]="contractTypesDataSource" id="contract-type" valueExpr="id" displayExpr="description" formControlName="contractType">
+            <dx-select-box [dataSource]="contracts" id="contract-type" valueExpr="id"
+              displayExpr="description" formControlName="contractId">
             </dx-select-box>
           </app-form-group>
         </div>
         <div class="column col-3">
-          <app-form-group *ngIf="showContractValue" [formGroup]="formGroup" formControlName="contractValue">
-            <label class="form-label" for="contract-value">Valore contratto</label>
+          <app-form-group [formGroup]="formGroup" formControlName="paymentMethod">
+            <label class="form-label" for="payment-method">Metodo di pagamento</label>
+            <dx-select-box [dataSource]="paymentMethodsDataSource" id="payment-method" valueExpr="id"
+              displayExpr="description" formControlName="paymentMethod">
+            </dx-select-box>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="subscriptionPaidDate">
+            <label class="form-label" for="subscription-paid-date">Iscrizione pagata il</label>
+            <dx-date-box id="subscription-paid-date" type="date" formControlName="subscriptionPaidDate">
+            </dx-date-box>
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="formGroup" formControlName="subscriptionAmount">
+            <label class="form-label" for="subscription-amount">Costo iscrizione</label>
             <div class="has-icon-left">
-              <input class="form-input" type="number" step="0.01" id="contract-value" placeholder="Costo contratto"
-                formControlName="contractValue">
+              <input class="form-input" type="number" step="0.01" id="subscription-amount"
+                placeholder="Costo iscrizione" formControlName="subscriptionAmount">
               <i class="form-icon bx bx-euro mr-2"></i>
             </div>
           </app-form-group>
         </div>
-      </div>
-      <div class="columns">
         <div class="column col-3">
-          <app-form-group [formGroup]="formGroup" formControlName="paymentMethod">
-            <label class="form-label" for="payment-method">Metodo di pagamento</label>
-            <dx-select-box [dataSource]="paymentMethodsDataSource" id="payment-method" valueExpr="id" displayExpr="description" formControlName="paymentMethod">
-            </dx-select-box>
-          </app-form-group>
-        </div>
-        <div class="column col-3">
-          <app-form-group [formGroup]="formGroup" formControlName="from">
-            <label class="form-label" for="subscription-amount">Iscrizione pagata</label>
+          <app-form-group [formGroup]="formGroup" formControlName="extraServicesEnabled">
+            <label class="form-label" for="extraServicesEnabled">Servizi extra</label>
             <label class="form-checkbox">
-              <input type="checkbox" formControlName="from">
+              <input id="extraServicesEnabled" type="checkbox" formControlName="extraServicesEnabled">
               <i class="form-icon"></i>
             </label>
           </app-form-group>
         </div>
         <div class="column col-3">
-          <app-form-group [formGroup]="formGroup" formControlName="to">
-            <label class="form-label" for="subscription-amount">Costo iscrizione</label>
-            <div class="has-icon-left">
-              <input class="form-input" type="number" step="0.01" id="subscription-amount" placeholder="Costo iscrizione"
-                formControlName="subscriptionAmount">
-              <i class="form-icon bx bx-euro mr-2"></i>
-            </div>
-          </app-form-group>
-        </div>
-        <div class="column col-3">
           <app-form-group [formGroup]="formGroup" formControlName="notes">
-            <label class="form-label" for="notes">Tipo contratto</label>
+            <label class="form-label" for="notes">Note</label>
             <textarea class="form-input" id="notes" placeholder="Note" rows="3" formControlName="notes"></textarea>
           </app-form-group>
         </div>
       </div>
 
       <!-- Genitori -->
-      <h4 class="text-center text-primary mt-4">Genitori</h4>
-      <div class="columns">
-        <div class="column col-4">
-          <app-form-group [formGroup]="formGroup" formControlName="parentFirstName">
+      <h4 class="text-center text-primary mt-4">Genitore 1</h4>
+      <div class="columns" formGroupName="parent1">
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="firstName">
             <label class="form-label" for="parent-first-name">Nome</label>
-            <input class="form-input" type="text" id="parent-first-name" placeholder="Nome" formControlName="parentFirstName">
+            <input class="form-input" type="text" id="parent-first-name" placeholder="Nome" formControlName="firstName">
           </app-form-group>
         </div>
-        <div class="column col-4">
-          <app-form-group [formGroup]="formGroup" formControlName="parentLastName">
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="lastName">
             <label class="form-label" for="parent-last-name">Cognome</label>
-            <input class="form-input" type="text" id="parent-last-name" placeholder="Cognome" formControlName="parentLastName">
+            <input class="form-input" type="text" id="parent-last-name" placeholder="Cognome"
+              formControlName="lastName">
           </app-form-group>
         </div>
-        <div class="column col-4">
-          <app-form-group [formGroup]="formGroup" formControlName="parentFiscalCode">
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="fiscalCode">
             <label class="form-label" for="fiscal-code">Codice fiscale</label>
             <input class="form-input" type="text" id="fiscal-code" placeholder="Codice fiscale"
-              formControlName="parentFiscalCode">
+              formControlName="fiscalCode">
           </app-form-group>
         </div>
-      </div>
-      <div class="columns">
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="billing">
+            <label class="form-label" for="billing">Fatturazione</label>
+            <label class="form-checkbox">
+              <input id="billing" type="checkbox" formControlName="billing">
+              <i class="form-icon"></i>
+            </label>
+          </app-form-group>
+        </div>
+        <div class="column col-6">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="email">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="text" id="email" placeholder="Email" formControlName="email">
+          </app-form-group>
+        </div>
+        <div class="column col-6">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="phone">
+            <label class="form-label" for="phone">Telefono</label>
+            <input class="form-input" type="text" id="phone" placeholder="Telefono" formControlName="phone">
+          </app-form-group>
+        </div>
         <div class="column col-4">
-          <app-form-group [formGroup]="formGroup" formControlName="address">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="address">
             <label class="form-label" for="address">Indirizzo</label>
             <input class="form-input" type="text" id="address" placeholder="Indirizzo" formControlName="address">
           </app-form-group>
         </div>
         <div class="column col-3">
-          <app-form-group [formGroup]="formGroup" formControlName="city">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="city">
             <label class="form-label" for="city">Città</label>
             <input class="form-input" type="text" id="city" placeholder="Città" formControlName="city">
           </app-form-group>
         </div>
         <div class="column col-2">
-          <app-form-group [formGroup]="formGroup" formControlName="cap">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="cap">
             <label class="form-label" for="cap">CAP</label>
-            <input class="form-input" type="text" id="cap" placeholder="CAP"
-              formControlName="cap">
+            <input class="form-input" type="text" id="cap" placeholder="CAP" formControlName="cap">
           </app-form-group>
         </div>
         <div class="column col-3">
-          <app-form-group [formGroup]="formGroup" formControlName="province">
+          <app-form-group [formGroup]="parent1FormGroup" formControlName="province">
             <label class="form-label" for="province">Provincia</label>
-            <input class="form-input" type="text" id="province" placeholder="Provincia"
-              formControlName="province">
+            <input class="form-input" type="text" id="province" placeholder="Provincia" formControlName="province">
+          </app-form-group>
+        </div>
+      </div>
+
+      <!-- Genitore 2 -->
+      <h4 class="text-center text-primary mt-4">Genitore 2</h4>
+      <div class="columns" formGroupName="parent1">
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="firstName">
+            <label class="form-label" for="parent-first-name">Nome</label>
+            <input class="form-input" type="text" id="parent-first-name" placeholder="Nome" formControlName="firstName">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="lastName">
+            <label class="form-label" for="parent-last-name">Cognome</label>
+            <input class="form-input" type="text" id="parent-last-name" placeholder="Cognome"
+              formControlName="lastName">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="fiscalCode">
+            <label class="form-label" for="fiscal-code">Codice fiscale</label>
+            <input class="form-input" type="text" id="fiscal-code" placeholder="Codice fiscale"
+              formControlName="fiscalCode">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="billing">
+            <label class="form-label" for="billing">Fatturazione</label>
+            <label class="form-checkbox">
+              <input id="billing" type="checkbox" formControlName="billing">
+              <i class="form-icon"></i>
+            </label>
+          </app-form-group>
+        </div>
+        <div class="column col-6">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="email">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="text" id="email" placeholder="Email" formControlName="email">
+          </app-form-group>
+        </div>
+        <div class="column col-6">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="phone">
+            <label class="form-label" for="phone">Telefono</label>
+            <input class="form-input" type="text" id="phone" placeholder="Telefono" formControlName="phone">
+          </app-form-group>
+        </div>
+        <div class="column col-4">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="address">
+            <label class="form-label" for="address">Indirizzo</label>
+            <input class="form-input" type="text" id="address" placeholder="Indirizzo" formControlName="address">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="city">
+            <label class="form-label" for="city">Città</label>
+            <input class="form-input" type="text" id="city" placeholder="Città" formControlName="city">
+          </app-form-group>
+        </div>
+        <div class="column col-2">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="cap">
+            <label class="form-label" for="cap">CAP</label>
+            <input class="form-input" type="text" id="cap" placeholder="CAP" formControlName="cap">
+          </app-form-group>
+        </div>
+        <div class="column col-3">
+          <app-form-group [formGroup]="parent2FormGroup" formControlName="province">
+            <label class="form-label" for="province">Provincia</label>
+            <input class="form-input" type="text" id="province" placeholder="Provincia" formControlName="province">
           </app-form-group>
         </div>
       </div>

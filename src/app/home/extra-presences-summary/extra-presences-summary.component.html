@@ -1,7 +1,7 @@
 <app-hbf-template class="h-100" [overflowScroll]="true">
 
   <div header class="p-5 pb-0 h-100 text-center">
-    <h2 class="text-primary">Riepilogo presenze</h2>
+    <h2 class="text-primary">Riepilogo presenze servizi extra</h2>
     <div *ngIf="!isLoading" class="header-container pb-2">
       <dx-select-box [dataSource]="kidsDataSource" id="kids" valueExpr="id" displayExpr="description"
         [searchEnabled]="true" [showClearButton]="true" (onValueChanged)="onKidChanged($event)" [value]="selectedKidId">
@@ -34,13 +34,13 @@
           </div>
         </dxi-column>
         <dxi-column caption="Mattina">
-          <dxi-column caption="Entrata" dataField="morningEntry" dataType="datetime"
+          <dxi-column caption="Entrata" dataField="morningEntry" dataType="datetime" width="75"
             cellTemplate="morningEntryCellTemplate">
             <div *dxTemplate="let data of 'morningEntryCellTemplate'">
               {{ data?.data?.morningEntry | date:'shortTime' }}
             </div>
           </dxi-column>
-          <dxi-column caption="Uscita" dataField="morningExit" dataType="datetime"
+          <dxi-column caption="Uscita" dataField="morningExit" dataType="datetime" width="75"
             cellTemplate="morningExitCellTemplate">
             <div *dxTemplate="let data of 'morningExitCellTemplate'">
               {{ data?.data?.morningExit | date:'shortTime' }}
@@ -48,22 +48,23 @@
           </dxi-column>
         </dxi-column>
         <dxi-column caption="Pomeriggio">
-          <dxi-column caption="Entrata" dataField="eveningEntry" dataType="datetime"
+          <dxi-column caption="Entrata" dataField="eveningEntry" dataType="datetime" width="75"
             cellTemplate="eveningEntryCellTemplate">
             <div *dxTemplate="let data of 'eveningEntryCellTemplate'">
               {{ data?.data?.eveningEntry | date:'shortTime' }}
             </div>
           </dxi-column>
-          <dxi-column caption="Uscita" dataField="eveningExit" dataType="datetime"
+          <dxi-column caption="Uscita" dataField="eveningExit" dataType="datetime" width="75"
             cellTemplate="eveningExitCellTemplate">
             <div *dxTemplate="let data of 'eveningExitCellTemplate'">
               {{ data?.data?.eveningExit | date:'shortTime' }}
             </div>
           </dxi-column>
-          <dxi-column name="dailyHours" caption="Ore totali giornaliere"
-            dataType="number" cellTemplate="dailyHoursCellTemplate">
-            <div *dxTemplate="let data of 'dailyHoursCellTemplate'">
-              {{ data?.data?.dailyHours }}
+          <dxi-column *ngFor="let specialContract of specialContracts" name="dailyHours"
+            caption="{{ specialContract?.description}} {{ specialContract?.hourCost }}€" dataType="number" [cellTemplate]="specialContract.id.toString()">
+            <div *dxTemplate="let data of specialContract.id.toString()">
+              <span *ngIf="specialContract.id === data.data?.specialContractId">{{ data?.data?.dailyHours }}</span>
+              <span *ngIf="specialContract.id !== data.data?.specialContractId"> - </span>
             </div>
           </dxi-column>
           <dxi-column name="dayExtraHours" caption="Extra contratto - {{ selectedKid?.contract.hourCost }}€"
