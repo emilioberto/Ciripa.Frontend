@@ -20,6 +20,7 @@ export class MenuComponent extends BaseComponent {
     { label: 'Appello nido', class: 'bx-calendar', appSection: AppSection.Presences },
     { label: 'Riepilogo presenze nido', class: 'bx-list-check', appSection: AppSection.PresencesSummary },
     { label: 'Resoconto fatture mensile', class: 'bx-money', appSection: AppSection.Invoices },
+    { label: 'Resoconto fatture annuale', class: 'bx-money', appSection: AppSection.YearInvoicesTotal },
     { label: 'Appello servizi extra', class: 'bx-calendar-star', appSection: AppSection.ExtraPresences },
     { label: 'Riepilogo presenze servizi extra', class: 'bx-money', appSection: AppSection.ExtraPresencesSummary },
     { label: 'Impostazioni', class: 'bx-cog', appSection: AppSection.Settings },

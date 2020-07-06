@@ -20,8 +20,8 @@
         <dxo-export [enabled]="true" [fileName]="fileName"></dxo-export>
 
         <dxi-column caption="Genitore">
-          <dxi-column caption="Nome" dataField="kid.firstName" dataType="string" [allowEditing]="false"></dxi-column>
-          <dxi-column caption="Cognome" dataField="kid.lastName" dataType="string" [allowEditing]="false"></dxi-column>
+          <dxi-column caption="Nome" dataField="billingParent.firstName" dataType="string" [allowEditing]="false"></dxi-column>
+          <dxi-column caption="Cognome" dataField="billingParent.lastName" dataType="string" [allowEditing]="false"></dxi-column>
         </dxi-column>
         <dxi-column caption="Metodo pagamento" dataField="paymentMethod">
           <dxo-lookup [dataSource]="paymentMethods" valueExpr="id" displayExpr="description">

@@ -8,12 +8,9 @@ import { assertNever } from '@app/shared/utils/utils';
 
 @Injectable()
 export class MenuService {
-
   activeMenuItem$ = new BehaviorSubject<AppSection>(null);
 
-  constructor(
-    private navigationSvc: NavigationService
-  ) { }
+  constructor(private navigationSvc: NavigationService) {}
 
   handleMenuClick(menuItem: AppSection): void {
     this.activeMenuItem$.next(menuItem);
@@ -24,9 +21,9 @@ export class MenuService {
       case AppSection.Presences:
         this.navigationSvc.presences();
         break;
-        case AppSection.ExtraPresences:
-          this.navigationSvc.extraPresences();
-          break;
+      case AppSection.ExtraPresences:
+        this.navigationSvc.extraPresences();
+        break;
       case AppSection.PresencesSummary:
         this.navigationSvc.presencesSummary();
         break;
@@ -39,12 +36,14 @@ export class MenuService {
       case AppSection.Invoices:
         this.navigationSvc.invoices();
         break;
-        case AppSection.Prints:
-          this.navigationSvc.prints();
-          break;
+      case AppSection.YearInvoicesTotal:
+        this.navigationSvc.yearInvoices();
+        break;
+      case AppSection.Prints:
+        this.navigationSvc.prints();
+        break;
       default:
         assertNever(menuItem);
     }
   }
-
 }

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { ByDateFilter } from '@app/shared/models/by-date-filter.model';
 import { Invoice } from '@app/shared/models/invoice.model';
 import { Presence } from '@app/shared/models/presence.model';
+import { YearInvoicesTotal } from '@app/shared/models/year-total-invoice.model';
 
 @Injectable()
 export class InvoicesService {
@@ -23,6 +24,10 @@ export class InvoicesService {
 
   update(invoices: Presence[]): Observable<Invoice[]> {
     return this.httpClient.put<Invoice[]>(this.apiUrl, invoices);
+  }
+
+  getYearList(filter: ByDateFilter): Observable<YearInvoicesTotal[]> {
+    return this.httpClient.put<YearInvoicesTotal[]>(`${this.apiUrl}/year`, filter);
   }
 
 }
