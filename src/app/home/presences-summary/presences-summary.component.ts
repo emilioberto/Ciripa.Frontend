@@ -2,6 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
 import DataSource from 'devextreme/data/data_source';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { KidsService } from '@app/home/services/kids.service';
@@ -16,10 +18,9 @@ import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 @Component({
   selector: 'app-presences-summary',
   templateUrl: './presences-summary.component.html',
-  styleUrls: ['./presences-summary.component.scss']
+  styleUrls: ['./presences-summary.component.scss'],
 })
 export class PresencesSummaryComponent extends BaseComponent {
-
   selectedDate = new Date();
   selectedKidId: number;
   fileName: string;
@@ -45,7 +46,7 @@ export class PresencesSummaryComponent extends BaseComponent {
     this.loadKids();
   }
 
-  internalOnDestroy(): void { }
+  internalOnDestroy(): void {}
 
   onDateChanged(event: any): void {
     this.selectedDate = event?.value;
@@ -78,38 +79,100 @@ export class PresencesSummaryComponent extends BaseComponent {
     }
   }
 
-  print(): void { }
+  print(): void {
+    const doc = new jsPDF();
+    const pdfName = `Riepilogo presenze ${this.selectedKid.firstName} ${
+      this.selectedKid.lastName
+    } ${this.datePipe.transform(this.selectedDate, 'MMMM yyyy')}`;
+    doc.setFontSize(18);
+    doc.text(pdfName, 14, 22);
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+
+    const presencesHead = [
+      [pdfName, null, null, null, null, null, null, null],
+      [
+        'Giorno',
+        'Entrata matt.',
+        'Uscita matt.',
+        'Entrata pom.',
+        'Uscita pom.',
+        `Ore gg`,
+        `Extra contratto ${this.selectedKid.contract.hourCost}€`,
+        `Fuori orario serv. ${this.selectedKid.contract.extraHourCost}€`,
+      ],
+    ];
+
+    const presencesBody = this.presenceSummary.presences.map((p) => {
+      return [
+        this.datePipe.transform(p.date, 'EEEE dd'),
+        this.datePipe.transform(p.morningEntry, 'shortTime'),
+        this.datePipe.transform(p.morningExit, 'shortTime'),
+        this.datePipe.transform(p.eveningEntry, 'shortTime'),
+        this.datePipe.transform(p.eveningExit, 'shortTime'),
+        p.dailyHours,
+        p.extraContractHours,
+        p.extraServiceTimeHours,
+      ];
+    });
+
+    presencesBody.push([
+      `TOTALE`,
+      null,
+      null,
+      null,
+      null,
+      `${this.presenceSummary.totalHours} ore`,
+      `${this.presenceSummary.totalExtraContractHours} ore`,
+      `${this.presenceSummary.totalExtraServiceTimeHours} ore`,
+    ]);
+
+    doc.autoTable({
+      head: presencesHead,
+      body: presencesBody,
+      footer: presencesHead,
+      startY: 30,
+      showHead: 'firstPage',
+    });
+
+    doc.save(pdfName);
+  }
 
   private loadKids(): void {
-    this.kidsSvc.getList()
+    this.kidsSvc
+      .getList()
       .pipe(handleLoading(this))
       .subscribe(
-        kids => {
+        (kids) => {
           this.kids = kids;
           this.kidsDataSource = this.getKidsDataSource(kids);
         },
-        err => this.exceptionsSvc.handle(err)
+        (err) => this.exceptionsSvc.handle(err)
       );
   }
 
   private loadData(): void {
-    this.selectedKid = this.kids.find(x => x.id === this.selectedKidId);
-    this.fileName = `${this.datePipe.transform(this.selectedDate, 'MMMM yyyy')}_${this.selectedKid?.lastName}_${this.selectedKid?.firstName}_`;
+    this.selectedKid = this.kids.find((x) => x.id === this.selectedKidId);
+    this.fileName = `${this.datePipe.transform(
+      this.selectedDate,
+      'MMMM yyyy'
+    )}_${this.selectedKid?.lastName}_${this.selectedKid?.firstName}_`;
 
     const filter: ByDateFilter = { date: this.selectedDate };
-    this.presencesSvc.getKidPresencesByMonth(this.selectedKidId, filter)
+    this.presencesSvc
+      .getKidPresencesByMonth(this.selectedKidId, filter)
       .pipe(handleLoading(this))
       .subscribe(
-        presencesSummary => this.presenceSummary = presencesSummary,
-        err => this.exceptionsSvc.handle(err)
+        (presencesSummary) => (this.presenceSummary = presencesSummary),
+        (err) => this.exceptionsSvc.handle(err)
       );
   }
 
   private getKidsDataSource(kids: Kid[]): DataSource {
-    const items = kids.map(x => {
+    const items = kids.map((x) => {
       return {
         id: x.id,
-        description: `${x?.firstName} ${x?.lastName}`
+        description: `${x?.firstName} ${x?.lastName}`,
       } as SelectBoxDataSourceItem;
     });
 
