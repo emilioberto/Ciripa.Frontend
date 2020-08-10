@@ -30,20 +30,21 @@
 
         <dxi-column caption="Giorno" dataField="date" dataType="datetime" cellTemplate="dayCellTemplate">
           <div *dxTemplate="let data of 'dayCellTemplate'">
-            {{ data?.data?.date | date:'EEEE dd' }}
+            <span *ngIf="data?.data?.date">{{ data?.data?.date | date:'EEEE dd' }}</span>
+            <span *ngIf="!data?.data?.date">Altro</span>
           </div>
         </dxi-column>
         <dxi-column caption="Mattina">
           <dxi-column caption="Entrata" dataField="morningEntry" dataType="datetime"
             cellTemplate="morningEntryCellTemplate">
             <div *dxTemplate="let data of 'morningEntryCellTemplate'">
-              {{ data?.data?.morningEntry | date:'shortTime' }}
+              <span *ngIf="data?.data?.morningEntry">{{ data?.data?.morningEntry | date:'shortTime' }}</span>
             </div>
           </dxi-column>
           <dxi-column caption="Uscita" dataField="morningExit" dataType="datetime"
             cellTemplate="morningExitCellTemplate">
             <div *dxTemplate="let data of 'morningExitCellTemplate'">
-              {{ data?.data?.morningExit | date:'shortTime' }}
+              <span *ngIf="data?.data?.morningExit">{{ data?.data?.morningExit | date:'shortTime' }}</span>
             </div>
           </dxi-column>
         </dxi-column>
@@ -51,19 +52,19 @@
           <dxi-column caption="Entrata" dataField="eveningEntry" dataType="datetime"
             cellTemplate="eveningEntryCellTemplate">
             <div *dxTemplate="let data of 'eveningEntryCellTemplate'">
-              {{ data?.data?.eveningEntry | date:'shortTime' }}
+              <span *ngIf="data?.data?.eveningEntry">{{ data?.data?.eveningEntry | date:'shortTime' }}</span>
             </div>
           </dxi-column>
           <dxi-column caption="Uscita" dataField="eveningExit" dataType="datetime"
             cellTemplate="eveningExitCellTemplate">
             <div *dxTemplate="let data of 'eveningExitCellTemplate'">
-              {{ data?.data?.eveningExit | date:'shortTime' }}
+              <span *ngIf="data?.data?.eveningExit">{{ data?.data?.eveningExit | date:'shortTime' }}</span>
             </div>
           </dxi-column>
           <dxi-column name="dailyHours" caption="Ore totali giornaliere"
             dataType="number" cellTemplate="dailyHoursCellTemplate">
             <div *dxTemplate="let data of 'dailyHoursCellTemplate'">
-              {{ data?.data?.dailyHours }}
+              <span *ngIf="data?.data?.dailyHours">{{ data?.data?.dailyHours }}</span>
             </div>
           </dxi-column>
           <dxi-column name="dayExtraHours" caption="Extra contratto - {{ selectedKid?.contract.hourCost }}€"

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { ByDateFilter } from '@app/shared/models/by-date-filter.model';
 import { Presence } from '@app/shared/models/presence.model';

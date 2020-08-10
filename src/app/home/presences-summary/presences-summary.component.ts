@@ -163,7 +163,15 @@ export class PresencesSummaryComponent extends BaseComponent {
       .getKidPresencesByMonth(this.selectedKidId, filter)
       .pipe(handleLoading(this))
       .subscribe(
-        (presencesSummary) => (this.presenceSummary = presencesSummary),
+        (presencesSummary) => {
+          this.presenceSummary = presencesSummary;
+          this.presenceSummary.presences = this.presenceSummary.presences.map(x => { // IF Last row present and has maxDate set to null
+            if (new Date(x.date).getFullYear() > 2999) {
+              x.date = null;
+            }
+            return x;
+          });
+        },
         (err) => this.exceptionsSvc.handle(err)
       );
   }

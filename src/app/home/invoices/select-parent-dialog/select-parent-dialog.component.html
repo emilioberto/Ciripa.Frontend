@@ -1,0 +1,20 @@
+<h2 class="text-primary">Seleziona il genitore per la nuova riga: </h2>
+<div *ngIf="!isLoading" class="header-container pb-2">
+  <dx-select-box
+    [dataSource]="parentsDataSource"
+    id="kids"
+    valueExpr="id"
+    displayExpr="description"
+    [searchEnabled]="true"
+    [showClearButton]="true"
+    [(ngModel)]="selectedId"
+  >
+  </dx-select-box>
+</div>
+
+<div mat-dialog-actions class="w-100 buttons-container">
+  <button class="btn btn-primary btn-lg" type="button" (click)="close()">
+    Annulla
+  </button>
+  <button class="btn btn-success btn-lg ml-2" type="button" (click)="confirm()" [disabled]="!selectedId">Conferma</button>
+</div>

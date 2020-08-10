@@ -10,10 +10,12 @@ import { switchMap, take } from 'rxjs/operators';
 
 import { ExceptionsService } from '@app/core/services/exceptions.service';
 import { ToastsService } from '@app/core/services/toasts.service';
+import { SelectParentDialogComponent } from '@app/home/invoices/select-parent-dialog/select-parent-dialog.component';
 import { InvoicesService } from '@app/home/services/invoices.service';
 import { BaseComponent } from '@app/shared/components/base.component';
 import { ConfirmDialogComponent } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
 import { Invoice } from '@app/shared/models/invoice.model';
+import { Kid } from '@app/shared/models/kid.model';
 import { PaymentMethod, PaymentMethodsDataSource } from '@app/shared/models/payment-method.enum';
 import { handleLoading } from '@app/shared/utils/custom-rxjs-operators';
 
@@ -67,6 +69,33 @@ export class InvoicesComponent extends BaseComponent {
           this.loadData();
         },
         (err) => this.exceptionsSvc.handle(err)
+      );
+  }
+
+  addRow(): void {
+    const createContractDialog = this.dialog.open(SelectParentDialogComponent);
+
+    createContractDialog.afterClosed()
+      .pipe(take(1))
+      .subscribe(
+        (kid: Kid) => {
+          if (!kid) {
+            return;
+          }
+          const newRow: Invoice = {
+            kidId: kid.id,
+            kid,
+            billingParent: (kid.parent1.billing || !kid.parent2.billing) ? kid.parent1 : kid.parent2,
+            number: null,
+            date: this.invoices[0].date,
+            hours: 0,
+            paymentDate: null,
+            subscriptionAmount: null,
+            subscriptionPaidDate: null
+          };
+          this.invoices.push(newRow);
+        },
+        err => this.exceptionsSvc.handle(err)
       );
   }
 

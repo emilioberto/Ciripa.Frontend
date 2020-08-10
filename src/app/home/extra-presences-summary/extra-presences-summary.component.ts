@@ -52,7 +52,7 @@ export class ExtraPresencesSummaryComponent extends BaseComponent {
     this.loadKids();
   }
 
-  internalOnDestroy(): void {}
+  internalOnDestroy(): void { }
 
   onDateChanged(event: any): void {
     this.selectedDate = event?.value;
@@ -89,10 +89,10 @@ export class ExtraPresencesSummaryComponent extends BaseComponent {
     const doc = new jsPDF();
     const pdfName = `Riepilogo presenze servizi extra ${
       this.selectedKid.firstName
-    } ${this.selectedKid.lastName} ${this.datePipe.transform(
-      this.selectedDate,
-      'MMMM yyyy'
-    )}`;
+      } ${this.selectedKid.lastName} ${this.datePipe.transform(
+        this.selectedDate,
+        'MMMM yyyy'
+      )}`;
     doc.setFontSize(18);
     doc.text(pdfName, 14, 22);
     doc.setFontSize(11);
@@ -186,6 +186,13 @@ export class ExtraPresencesSummaryComponent extends BaseComponent {
         ([presencesSummary, specialContracts]) => {
           this.presenceSummary = presencesSummary;
           this.specialContracts = specialContracts;
+          this.presenceSummary = presencesSummary;
+          this.presenceSummary.presences = this.presenceSummary.presences.map(x => { // IF Last row present and has maxDate set to null
+            if (new Date(x.date).getFullYear() > 2999) {
+              x.date = null;
+            }
+            return x;
+          });
         },
         (err) => this.exceptionsSvc.handle(err)
       );

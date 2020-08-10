@@ -26,6 +26,7 @@ import { NewContractDialogComponent } from '@app/home/settings/new-contract-dial
 import { SettingsComponent } from '@app/home/settings/settings.component';
 import { YearInvoicesComponent } from '@app/home/year-invoices/year-invoices.component';
 import { SharedModule } from '@app/shared/shared.module';
+import { SelectParentDialogComponent } from './invoices/select-parent-dialog/select-parent-dialog.component';
 
 const routes: Routes = [
   {
@@ -62,7 +63,8 @@ const routes: Routes = [
     NewContractDialogComponent,
     ExtraPresencesComponent,
     ExtraPresencesSummaryComponent,
-    YearInvoicesComponent
+    YearInvoicesComponent,
+    SelectParentDialogComponent
   ],
   imports: [
     RouterModule.forChild(routes),

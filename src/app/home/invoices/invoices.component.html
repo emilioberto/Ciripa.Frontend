@@ -6,10 +6,17 @@
       <dx-date-box type="date" (onValueChanged)="onDateChanged($event)" [disabled]="isLoading"
         displayFormat="monthAndYear" [calendarOptions]="calendarOptions" [value]="selectedDate">
       </dx-date-box>
-      <button class="btn btn-success btn-lg ml-2" type="button" [disabled]="isLoading" (click)="save()">
-        <i class="bx bx-save mr-2"></i>
-        <span>Salva</span>
-      </button>
+
+      <div class="buttons-container">
+        <button class="btn btn-success btn-lg ml-2" type="button" [disabled]="isLoading" (click)="addRow()">
+          <i class="bx bx-plus mr-2"></i>
+          <span>Aggiungi riga</span>
+        </button>
+        <button class="btn btn-success btn-lg ml-2" type="button" [disabled]="isLoading" (click)="save()">
+          <i class="bx bx-save mr-2"></i>
+          <span>Salva</span>
+        </button>
+      </div>
     </div>
   </div>
 
