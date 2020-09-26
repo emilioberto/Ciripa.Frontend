@@ -161,7 +161,15 @@ export class InvoicesComponent extends BaseComponent {
       ],
     ];
 
-    const presencesBody = this.invoices.map((i) => {
+    let selectedRowsIds: number[] = [];
+    const selectedRows = this.grid.instance.getSelectedRowKeys() as Invoice[];
+    if (selectedRows?.length) {
+      selectedRowsIds = selectedRows.map(x => x.id);
+    }
+
+    const invoicesToShow = this.invoices.filter(x => !selectedRowsIds?.some(y => y === x.id));
+
+    const presencesBody = invoicesToShow.map((i) => {
       const parent = i.kid?.parent2?.billing ? i.kid.parent2 : i.kid.parent1;
       return [
         parent.firstName,

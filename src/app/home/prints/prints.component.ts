@@ -42,9 +42,20 @@ export class PrintsComponent extends BaseComponent {
 
   printPresences(extraActivities: boolean = false): void {
     const todayFilter: ByDateFilter = { date: new Date() };
+    todayFilter.date.setHours(0, 0, 0, 0);
     this.presencesSvc.getList(todayFilter)
       .pipe(
         map(presences => {
+          presences = presences.sort((a, b) => {
+            if (a.kid.firstName.toLowerCase() < b.kid.firstName.toLowerCase()) {
+              return -1;
+            }
+            if (a.kid.firstName.toLowerCase() > b.kid.firstName.toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
+          presences = presences.filter(x => !x.kid.to || new Date(x.kid.to) >= todayFilter.date);
           return extraActivities
             ? presences.filter(x => x.kid.extraServicesEnabled)
             : presences;
@@ -86,9 +97,20 @@ export class PrintsComponent extends BaseComponent {
 
   printMonthlyPresences(extraActivities: boolean = false): void {
     const todayFilter: ByDateFilter = { date: new Date() };
+    todayFilter.date.setHours(0, 0, 0, 0);
     this.presencesSvc.getList(todayFilter)
       .pipe(
         map(presences => {
+          presences = presences.sort((a, b) => {
+            if (a.kid.firstName.toLowerCase() < b.kid.firstName.toLowerCase()) {
+              return -1;
+            }
+            if (a.kid.firstName.toLowerCase() > b.kid.firstName.toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
+          presences = presences.filter(x => !x.kid.to || new Date(x.kid.to) >= todayFilter.date);
           return extraActivities
             ? presences.filter(x => x.kid.extraServicesEnabled)
             : presences;
