@@ -8,6 +8,7 @@ import { ExtraPresencesSummaryComponent } from '@app/home/extra-presences-summar
 import { ExtraPresencesComponent } from '@app/home/extra-presences/extra-presences.component';
 import { HomeComponent } from '@app/home/home.component';
 import { InvoicesComponent } from '@app/home/invoices/invoices.component';
+import { SelectParentDialogComponent } from '@app/home/invoices/select-parent-dialog/select-parent-dialog.component';
 import { KidDetailComponent } from '@app/home/kid-detail/kid-detail.component';
 import { KidsComponent } from '@app/home/kids/kids.component';
 import { MenuComponent } from '@app/home/menu/menu.component';
@@ -26,7 +27,6 @@ import { NewContractDialogComponent } from '@app/home/settings/new-contract-dial
 import { SettingsComponent } from '@app/home/settings/settings.component';
 import { YearInvoicesComponent } from '@app/home/year-invoices/year-invoices.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { SelectParentDialogComponent } from './invoices/select-parent-dialog/select-parent-dialog.component';
 
 const routes: Routes = [
   {
